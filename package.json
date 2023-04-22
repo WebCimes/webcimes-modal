@@ -1,0 +1,28 @@
+{
+  "name": "webcimes-modal",
+  "version": "1.0.0",
+  "description": "Create and animate modals simply. It works with vanilla javascript + html + css.",
+  "main": "webcimes-modal.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebCimes/webcimes-modal.git"
+  },
+  "author": "WebCimes",
+  "license": "MIT",
+  "keywords": [
+    "modal",
+    "multiple modals",
+    "alert",
+    "confirm",
+    "popup",
+    "javascript",
+    "vanilla javascript"
+  ],
+  "bugs": {
+    "url": "https://github.com/WebCimes/webcimes-modal/issues"
+  },
+  "homepage": "https://github.com/WebCimes/webcimes-modal#readme"
+}

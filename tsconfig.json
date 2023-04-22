@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "module": "ES6",
+      "target": "ES6",
+      "removeComments": false,
+      "sourceMap": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+    },
+    "files": [
+      "webcimes-modal.ts",
+    ]
+  }

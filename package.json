@@ -1,6 +1,6 @@
 {
   "name": "webcimes-modal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simply create and animate modals. It works with vanilla javascript + html + css.",
   "main": "webcimes-modal.js",
   "scripts": {

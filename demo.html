@@ -21,7 +21,7 @@
             // Wait for dom content loaded
             document.addEventListener("DOMContentLoaded", function()
             {
-                const modal = new WebcimesModal({
+                const myModal = new WebcimesModal({
                     setId: null, // set specific id to the modal, default "null"
                     setClass: null, // set specific class to the modal, default "null"
                     width: 'auto', // width (specify the unit), default "auto"
@@ -52,13 +52,14 @@
                     onConfirmButton: () => {console.log("on confirm button");}, // callback after trigger confirm button
                 });
 
-                const modal2 = new WebcimesModal({
+                const myModal2 = new WebcimesModal({
                     titleHtml: "My title", // html for title, default "null"
                     bodyHtml: document.querySelector(".test").outerHTML, // html for body, default "null"
                     buttonCancelHtml: "Cancel", // html for cancel button, default "null"
                     buttonConfirmHtml: "Confirm", // html for confirm button, default "null"
                     closeOnConfirmButton: false, // close the modal after trigger confirm button, default "true"
-                    onConfirmButton: () => {modal2.destroy();}, // callback after trigger confirm button
+                    afterShow: () => {console.log(myModal2.webcimesModals); console.log(myModal2.modal);}, // callback before show modal
+                    onConfirmButton: () => {myModal2.destroy();}, // callback after trigger confirm button
                 });
             });
 		</script>

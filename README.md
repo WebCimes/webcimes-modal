@@ -48,7 +48,7 @@ import { WebcimesModal } from "webcimes-modal";
 document.addEventListener("DOMContentLoaded", function()
 {
 	// Create modal
-	const modal = new WebcimesModal({
+	const myModal = new WebcimesModal({
 		setId: null, // set a specific id on the modal. default "null" 
 		setClass: null, // set a specific class on the modal, default "null"
 		width: 'auto', // width (specify unit), default "auto"
@@ -95,7 +95,7 @@ After a creating a modal, the basic html structure look like this:
 	</div>
 	<div class="modalFooter">
 		<button class="cancel">Cancel</button>
-		<button class="confirm ">Confirm</button>
+		<button class="confirm">Confirm</button>
 	</div>
 </div>
 ```
@@ -106,7 +106,7 @@ All parameters are optionnal, but to set the base message on the modal you can u
 For these 4 fields you can just directly write the text or define tags, or call html from an element like this : 
 
 ```javascript
-const modal = new WebcimesModal({
+const myModal = new WebcimesModal({
 	titleHtml: "My title <span style='color:red'>with red color</span>", // directly put an html tag or attribute like span and style
 	bodyHtml: document.querySelector("#myID").outerHTML, // set html from an HTML element
 	buttonCancelHtml: "Cancel <img src='my-url' alt=''>", // put the img tag
@@ -131,7 +131,7 @@ By default the `height` and `width` are set to `auto`, the modal will also be si
 You can also set the determined `height` or `width` by indicating the value with a number and a unit.
 
 ```javascript
-const modal = new WebcimesModal({
+const myModal = new WebcimesModal({
 	width: '80vm',
 	height: '200px',
 });
@@ -141,7 +141,7 @@ const modal = new WebcimesModal({
 Below are the different options for customize the modal behavior.
 
 ```javascript
-const modal = new WebcimesModal({
+const myModal = new WebcimesModal({
 	closeOnCancelButton: false, // close modal after triggering cancel button, default "true"
 	closeOnConfirmButton: false, // close modal after triggering confirm button, default "true"
 	showCloseButton: true, // show close button, default "true"
@@ -159,7 +159,7 @@ const modal = new WebcimesModal({
 You can define the style of the modal with `css`, but you can also use the style property which allows to directly add an additional style to the modal.
 
 ```javascript
-const modal = new WebcimesModal({
+const myModal = new WebcimesModal({
 	style: "background:black; color:#fff; text-align:center;",
 });
 ```
@@ -174,7 +174,7 @@ For `animationOnDestroy` you can choose between `animDropUp` or `animFadeOut`
 And you can set the duration of all animation by setting `animationDuration` with a number in ms.
 
 ```javascript
-const modal = new WebcimesModal({
+const myModal = new WebcimesModal({
 	animationOnShow: 'animDropDown', // "animDropDown" or "animFadeIn" for show animation, default "animDropDown"
 	animationOnDestroy: 'animDropUp', // "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp"
 	animationDuration: 500, // anim duration in ms, default "500"
@@ -185,7 +185,7 @@ const modal = new WebcimesModal({
 Multiple events exist, which allow to interact with the modal at each step. You can use all events below: 
 
 ```javascript
-const modal = new WebcimesModal({
+const myModal = new WebcimesModal({
 	beforeShow: () => {console.log("before show");}, // callback before show modal
 	afterShow: () => {console.log("after show");}, // callback after show modal
 	beforeDestroy: () => {console.log("before destroy");}, // callback before destroy modal
@@ -208,12 +208,37 @@ To destroy the modal, you have several ways:
 
 ```javascript
 // Get the instance
-const modal = new WebcimesModal(...);
+const myModal = new WebcimesModal(...);
 
 // Things
 
 // Then call the destroy method:
-modal.destroy();
+myModal.destroy();
+```
+
+### Get dom element
+You can get the current dom element from the modal like this:
+
+```javascript
+// Get the instance
+const myModal = new WebcimesModal(...);
+
+// Things
+
+// Then get the dom element
+myModal.modal;
+```
+
+Or you can get the global container of all modals like this:
+
+```javascript
+// Get the instance
+const myModal = new WebcimesModal(...);
+
+// Things
+
+// Then get the dom element
+myModal.webcimesModals;
 ```
 
 ### Style modals:

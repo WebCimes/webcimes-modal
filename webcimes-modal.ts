@@ -73,8 +73,8 @@ interface Options {
  */
 export class WebcimesModal
 {
-	private webcimesModals: HTMLElement;
-	private modal: HTMLElement;
+	public webcimesModals: HTMLElement;
+	public modal: HTMLElement;
 	private options: Options;
 	private eventCancelButton: () => void = () => {
 		// Callback on cancel button
@@ -187,6 +187,11 @@ export class WebcimesModal
 			e.preventDefault();
 		}
 	};
+	private eventResize: () => void = () => {
+		this.modal.style.removeProperty("left");
+		this.modal.style.removeProperty("top");
+		
+	};
 
 	/**
 	 * Create modal
@@ -284,12 +289,6 @@ export class WebcimesModal
 			this.webcimesModals = <HTMLElement>document.querySelector(".webcimesModals");
 		}
 	
-		// Callback before show modal
-		if(typeof this.options.beforeShow === 'function')
-		{
-			this.options.beforeShow();
-		}
-	
 		// Create modal
 		this.webcimesModals.insertAdjacentHTML("beforeend", 
 			`<div class="modal `+(this.options.setClass?this.options.setClass:'')+` `+this.options.animationOnShow+`" `+(this.options.setClass?'id="'+this.options.setId+'"':'')+`>
@@ -313,6 +312,15 @@ export class WebcimesModal
 			</div>`
 		);
 		this.modal = <HTMLElement>this.webcimesModals.lastElementChild;
+		
+		// Callback before show modal
+		if(typeof this.options.beforeShow === 'function')
+		{
+			// Set a timeout of zero, to wait for some dom to load
+			setTimeout(() => {
+				this.options.beforeShow();
+			}, 0);
+		}
 		
 		// Set animation duration for modal
 		this.modal.style.setProperty("animation-duration", this.options.animationDuration+"ms");
@@ -416,6 +424,9 @@ export class WebcimesModal
 
 			document.addEventListener("selectstart", this.eventPreventSelectText);
 		}
+
+		// When resizing window, reset modal position to center
+		window.addEventListener("resize", this.eventResize);
     }
 
 	/**
@@ -487,6 +498,8 @@ export class WebcimesModal
 						document.removeEventListener("selectstart", this.eventPreventSelectText);
 					}
 
+					window.removeEventListener("resize", this.eventResize);
+					
 					// Remove webcimesModals or modal according the number of modal
 					(document.querySelectorAll(".modal").length>1?this.modal:this.webcimesModals).remove();
 				}

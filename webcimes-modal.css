@@ -90,6 +90,7 @@
 }
 .webcimesModals > .modal > .modalHeader > .title
 {
+	flex: 1;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	font-size: var(--modal-title-font-size);

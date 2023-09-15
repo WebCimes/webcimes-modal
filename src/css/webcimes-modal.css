@@ -1,0 +1,416 @@
+/**
+ * Copyright (c) 2023 WebCimes - RICHARD Florian (https://webcimes.com)
+ * MIT License - https://choosealicense.com/licenses/mit/
+ * Date: 2023-03-25
+ */
+
+/*
+-----------------------
+    WEBCIMES MODAL
+-----------------------
+*/
+
+.webcimesModals,
+.webcimesModals *,
+.webcimesModals *::before,
+.webcimesModals *::after
+{ 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.webcimesModals
+{
+	--webcimes-modals-background: rgba(0,0,0,0.8);
+	--webcimes-modals-z-index: 5;
+
+	position: fixed;
+	background: var(--webcimes-modals-background);
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: var(--webcimes-modals-z-index);
+}
+.webcimesModals > .modal
+{
+	--modal-color: inherit;
+	--modal-background: #fff;
+	--modal-border-color: #ddd;
+	--modal-box-shadow: 1px 1px 3px 0px #444;
+	--modal-title-font-size: 24px;
+	--modal-button-cancel-background: rgba(102,102,102,1);
+	--modal-button-cancel-background-hover: rgba(102,102,102,0.7);
+	--modal-button-cancel-color: #fff;
+	--modal-button-cancel-color-hover: #fff;
+	--modal-button-confirm-background: rgba(0,0,0,1);
+	--modal-button-confirm-background-hover: rgba(0,0,0,0.7);
+	--modal-button-confirm-color: #fff;
+	--modal-button-confirm-color-hover: #fff;
+	
+	position: absolute;
+	border-radius: 5px;
+	overflow:auto;
+	color: var(--modal-color);
+	background: var(--modal-background);
+	-webkit-box-shadow: var(--modal-box-shadow);
+	-moz-box-shadow: var(--modal-box-shadow);
+	-o-box-shadow: var(--modal-box-shadow);
+	box-shadow: var(--modal-box-shadow);
+}
+.webcimesModals > .modal button
+{
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	border: none;
+	background: none;
+}
+.webcimesModals > .modal > .modalHeader
+{
+	position: relative;
+	background: var(--modal-background);
+	padding: 20px 40px;
+	border-bottom: 1px solid var(--modal-border-color);
+	display: flex;
+	align-items: center;
+}
+.webcimesModals > .modal > .modalHeader.sticky
+{
+	position: sticky;
+	top: 0;
+}
+.webcimesModals > .modal > .modalHeader.movable
+{
+	cursor: move;
+	touch-action: none;
+}
+.webcimesModals > .modal > .modalHeader > .title
+{
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: var(--modal-title-font-size);
+}
+.webcimesModals > .modal > .modalHeader > .close
+{
+	position: absolute;
+	height: 20px;
+	width: 12px;
+	right: 15px;
+	top: 50%;
+	margin-top: -10px;
+	background-image: url("../images/times.svg");
+    cursor: pointer;
+	opacity: 1;
+    -webkit-transition: opacity 0.6s ease 0s;
+    -moz-transition: opacity 0.6s ease 0s;
+    -o-transition: opacity 0.6s ease 0s;
+    transition: opacity 0.6s ease 0s;
+}
+.webcimesModals > .modal > .modalHeader > .close:hover
+{
+	opacity: 0.5;
+}
+.webcimesModals > .modal > .modalBody
+{
+	padding: 20px 40px;
+}
+.webcimesModals > .modal > .modalBody.movable
+{
+	cursor: move;
+}
+.webcimesModals > .modal > .modalFooter
+{
+	background: var(--modal-background);
+	padding: 20px 40px;
+	border-top: 1px solid var(--modal-border-color);
+	display: flex;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+}
+.webcimesModals > .modal > .modalFooter.sticky
+{
+	position: sticky;
+	bottom: 0;
+}
+.webcimesModals > .modal > .modalFooter.movable
+{
+	cursor: move;
+	touch-action: none;
+}
+.webcimesModals > .modal > .modalFooter button
+{
+	max-width: 100%;
+	flex: 0 0 auto;
+	border-radius: 5px;
+	padding: 10px 30px;
+	margin: 5px;
+	cursor: pointer;
+	text-overflow: ellipsis;
+	overflow: hidden;
+    -webkit-transition: color 0.6s ease 0s, background 0.6s ease 0s;
+    -moz-transition: color 0.6s ease 0s, background 0.6s ease 0s;
+    -o-transition: color 0.6s ease 0s, background 0.6s ease 0s;
+    transition: color 0.6s ease 0s, background 0.6s ease 0s;
+}
+.webcimesModals > .modal > .modalFooter button.cancel
+{
+	background: var(--modal-button-cancel-background);
+	color: var(--modal-button-cancel-color);
+}
+.webcimesModals > .modal > .modalFooter button.cancel:hover
+{
+	background: var(--modal-button-cancel-background-hover);
+	color: var(--modal-button-cancel-color-hover);
+}
+.webcimesModals > .modal > .modalFooter button.confirm
+{
+	background: var(--modal-button-confirm-background);
+	color: var(--modal-button-confirm-color);
+}
+.webcimesModals > .modal > .modalFooter button.confirm:hover
+{
+	background: var(--modal-button-confirm-background-hover);
+	color: var(--modal-button-confirm-color-hover);
+}
+
+/* ANIMATIONS */
+
+@-webkit-keyframes animFadeIn
+{
+	0%
+	{
+		opacity: 0;
+	} 
+	100%
+	{
+		opacity: 1;
+	}
+}
+@keyframes animFadeIn
+{
+	0%
+	{
+		opacity:0;
+	} 
+	100%
+	{
+		opacity:1;
+	}
+}
+.animFadeIn
+{
+	-webkit-animation-duration: 0.5s;
+	animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-name: animFadeIn;
+	animation-name: animFadeIn;
+}
+
+@-webkit-keyframes animFadeOut
+{
+	0%
+	{
+		opacity: 1;
+	} 
+	100%
+	{
+		opacity: 0;
+	}
+}
+@keyframes animFadeOut
+{
+	0%
+	{
+		opacity: 1;
+	} 
+	100%
+	{
+		opacity: 0;
+	}
+}
+.animFadeOut
+{
+	-webkit-animation-duration: 0.5s;
+	animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-name: animFadeOut;
+	animation-name: animFadeOut;
+}
+
+@-webkit-keyframes animDropDown
+{
+	0%
+	{
+		-webkit-transform: translateY(-20vh);
+		-moz-transform: translateY(-20vh);
+		-ms-transform: translateY(-20vh);
+		-o-transform: translateY(-20vh);
+		transform: translateY(-20vh);
+		opacity: 0;
+	} 
+	100%
+	{
+		-webkit-transform: translateY(0);
+		-moz-transform: translateY(0);
+		-ms-transform: translateY(0);
+		-o-transform: translateY(0);
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes animDropDown
+{
+	0%
+	{
+		-webkit-transform: translateY(-20vh);
+		-moz-transform: translateY(-20vh);
+		-ms-transform: translateY(-20vh);
+		-o-transform: translateY(-20vh);
+		transform: translateY(-20vh);
+		opacity: 0;
+	} 
+	100%
+	{
+		-webkit-transform: translateY(0);
+		-moz-transform: translateY(0);
+		-ms-transform: translateY(0);
+		-o-transform: translateY(0);
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+.animDropDown
+{
+	-webkit-animation-duration: 0.5s;
+	animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-name: animDropDown;
+	animation-name: animDropDown;
+}
+
+@-webkit-keyframes animDropUp
+{
+	0%
+	{
+		-webkit-transform: translateY(0);
+		-moz-transform: translateY(0);
+		-ms-transform: translateY(0);
+		-o-transform: translateY(0);
+		transform: translateY(0);
+		opacity: 1;
+	} 
+	100%
+	{
+		-webkit-transform: translateY(-20vh);
+		-moz-transform: translateY(-20vh);
+		-ms-transform: translateY(-20vh);
+		-o-transform: translateY(-20vh);
+		transform: translateY(-20vh);
+		opacity: 0;
+	}
+}
+
+@keyframes animDropUp
+{
+	0%
+	{
+		-webkit-transform: translateY(0);
+		-moz-transform: translateY(0);
+		-ms-transform: translateY(0);
+		-o-transform: translateY(0);
+		transform: translateY(0);
+		opacity: 1;
+	} 
+	100%
+	{
+		-webkit-transform: translateY(-20vh);
+		-moz-transform: translateY(-20vh);
+		-ms-transform: translateY(-20vh);
+		-o-transform: translateY(-20vh);
+		transform: translateY(-20vh);
+		opacity: 0;
+	}
+}
+.animDropUp
+{
+	-webkit-animation-duration: 0.5s;
+	animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-name: animDropUp;
+	animation-name: animDropUp;
+}
+
+@-webkit-keyframes animGrowShrink
+{
+	0%
+	{
+		-webkit-transform: scale(1);
+		-moz-transform: scale(1);
+		-ms-transform: scale(1);
+		-o-transform: scale(1);
+		transform: scale(1);
+	}
+	50%
+	{
+		-webkit-transform: scale(1.2);
+		-moz-transform: scale(1.2);
+		-ms-transform: scale(1.2);
+		-o-transform: scale(1.2);
+		transform: scale(1.2);
+	}
+	100%
+	{
+		-webkit-transform: scale(1);
+		-moz-transform: scale(1);
+		-ms-transform: scale(1);
+		-o-transform: scale(1);
+		transform: scale(1);
+	}
+}
+
+@keyframes animGrowShrink
+{
+	0%
+	{
+		-webkit-transform: scale(1);
+		-moz-transform: scale(1);
+		-ms-transform: scale(1);
+		-o-transform: scale(1);
+		transform: scale(1);
+	}
+	50%
+	{
+		-webkit-transform: scale(1.1);
+		-moz-transform: scale(1.1);
+		-ms-transform: scale(1.1);
+		-o-transform: scale(1.1);
+		transform: scale(1.1);
+	}
+	100%
+	{
+		-webkit-transform: scale(1);
+		-moz-transform: scale(1);
+		-ms-transform: scale(1);
+		-o-transform: scale(1);
+		transform: scale(1);
+	}
+}
+.animGrowShrink
+{
+	-webkit-animation-duration: 0.5s;
+	animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-name: animGrowShrink;
+	animation-name: animGrowShrink;
+}

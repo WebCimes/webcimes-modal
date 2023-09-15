@@ -1,13 +1,165 @@
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   WebcimesModal: () => (/* binding */ WebcimesModal)
+/* harmony export */ });
 /**
  * Copyright (c) 2023 WebCimes - RICHARD Florian (https://webcimes.com)
  * MIT License - https://choosealicense.com/licenses/mit/
  * Date: 2023-03-25
  */
-"use strict";
+
 /**
  * Class WebcimesModal
  */
-export class WebcimesModal {
+class WebcimesModal {
+    webcimesModals;
+    modal;
+    options;
+    eventCancelButton = () => {
+        // Callback on cancel button
+        if (typeof this.options.onCancelButton === 'function') {
+            this.options.onCancelButton();
+        }
+    };
+    eventConfirmButton = () => {
+        // Callback on confirm button
+        if (typeof this.options.onConfirmButton === 'function') {
+            this.options.onConfirmButton();
+        }
+    };
+    eventClickOutside = (e) => {
+        if (e.target == this.webcimesModals) {
+            if (this.options.allowCloseOutside) {
+                // Destroy modal
+                this.destroy();
+            }
+            else {
+                // Add animation for show modal who can't be close
+                this.modal.classList.add("animGrowShrink");
+                // Delete animation after the animation delay
+                setTimeout(() => {
+                    this.modal.classList.remove("animGrowShrink");
+                }, this.options.animationDuration);
+            }
+        }
+    };
+    eventClickCloseButton = () => {
+        // Destroy modal
+        this.destroy();
+    };
+    eventDragModalOnTop = (e) => {
+        // Only if target is not close button (for bug in chrome)
+        if (!e.target.closest(".close")) {
+            // If multiple modal, and modal not already on top (no next sibling), we place the current modal on the top
+            if (document.querySelectorAll(".modal").length > 1 && this.modal.nextElementSibling !== null) {
+                let oldScrollTop = this.modal.scrollTop;
+                this.webcimesModals.insertAdjacentElement("beforeend", this.modal);
+                this.modal.scrollTop = oldScrollTop;
+            }
+        }
+    };
+    position;
+    offset;
+    isDragging = false;
+    moveFromElements = [];
+    eventDragStart = (e) => {
+        // Start drag only if it's not a button
+        if (!e.target.closest("button")) {
+            this.isDragging = true;
+            // Mouse
+            if (e.clientX) {
+                this.offset = {
+                    x: this.modal.offsetLeft - e.clientX,
+                    y: this.modal.offsetTop - e.clientY
+                };
+            }
+            // Touch device (use the first touch only)
+            else if (e.touches) {
+                this.offset = {
+                    x: this.modal.offsetLeft - e.touches[0].clientX,
+                    y: this.modal.offsetTop - e.touches[0].clientY
+                };
+            }
+        }
+    };
+    eventMove = (e) => {
+        if (this.isDragging) {
+            // Mouse
+            if (e.clientX) {
+                this.position = {
+                    x: e.clientX,
+                    y: e.clientY
+                };
+            }
+            // Touch device (use the first touch only)
+            else if (e.touches) {
+                this.position = {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                };
+            }
+            this.modal.style.left = (this.position.x + this.offset.x) + 'px';
+            this.modal.style.top = (this.position.y + this.offset.y) + 'px';
+        }
+    };
+    eventDragStop = () => {
+        this.isDragging = false;
+    };
+    eventPreventSelectText = (e) => {
+        if (this.isDragging) {
+            e.preventDefault();
+        }
+    };
+    eventResize = () => {
+        this.modal.style.removeProperty("left");
+        this.modal.style.removeProperty("top");
+    };
     /**
      * Create modal
      * @param {Object} options
@@ -41,103 +193,6 @@ export class WebcimesModal {
      * @param {() => void} options.onConfirmButton - callback after triggering confirm button
      */
     constructor(options) {
-        this.eventCancelButton = () => {
-            // Callback on cancel button
-            if (typeof this.options.onCancelButton === 'function') {
-                this.options.onCancelButton();
-            }
-        };
-        this.eventConfirmButton = () => {
-            // Callback on confirm button
-            if (typeof this.options.onConfirmButton === 'function') {
-                this.options.onConfirmButton();
-            }
-        };
-        this.eventClickOutside = (e) => {
-            if (e.target == this.webcimesModals) {
-                if (this.options.allowCloseOutside) {
-                    // Destroy modal
-                    this.destroy();
-                }
-                else {
-                    // Add animation for show modal who can't be close
-                    this.modal.classList.add("animGrowShrink");
-                    // Delete animation after the animation delay
-                    setTimeout(() => {
-                        this.modal.classList.remove("animGrowShrink");
-                    }, this.options.animationDuration);
-                }
-            }
-        };
-        this.eventClickCloseButton = () => {
-            // Destroy modal
-            this.destroy();
-        };
-        this.eventDragModalOnTop = (e) => {
-            // Only if target is not close button (for bug in chrome)
-            if (!e.target.closest(".close")) {
-                // If multiple modal, and modal not already on top (no next sibling), we place the current modal on the top
-                if (document.querySelectorAll(".modal").length > 1 && this.modal.nextElementSibling !== null) {
-                    let oldScrollTop = this.modal.scrollTop;
-                    this.webcimesModals.insertAdjacentElement("beforeend", this.modal);
-                    this.modal.scrollTop = oldScrollTop;
-                }
-            }
-        };
-        this.isDragging = false;
-        this.moveFromElements = [];
-        this.eventDragStart = (e) => {
-            // Start drag only if it's not a button
-            if (!e.target.closest("button")) {
-                this.isDragging = true;
-                // Mouse
-                if (e.clientX) {
-                    this.offset = {
-                        x: this.modal.offsetLeft - e.clientX,
-                        y: this.modal.offsetTop - e.clientY
-                    };
-                }
-                // Touch device (use the first touch only)
-                else if (e.touches) {
-                    this.offset = {
-                        x: this.modal.offsetLeft - e.touches[0].clientX,
-                        y: this.modal.offsetTop - e.touches[0].clientY
-                    };
-                }
-            }
-        };
-        this.eventMove = (e) => {
-            if (this.isDragging) {
-                // Mouse
-                if (e.clientX) {
-                    this.position = {
-                        x: e.clientX,
-                        y: e.clientY
-                    };
-                }
-                // Touch device (use the first touch only)
-                else if (e.touches) {
-                    this.position = {
-                        x: e.touches[0].clientX,
-                        y: e.touches[0].clientY
-                    };
-                }
-                this.modal.style.left = (this.position.x + this.offset.x) + 'px';
-                this.modal.style.top = (this.position.y + this.offset.y) + 'px';
-            }
-        };
-        this.eventDragStop = () => {
-            this.isDragging = false;
-        };
-        this.eventPreventSelectText = (e) => {
-            if (this.isDragging) {
-                e.preventDefault();
-            }
-        };
-        this.eventResize = () => {
-            this.modal.style.removeProperty("left");
-            this.modal.style.removeProperty("top");
-        };
         // Defaults
         const defaults = {
             setId: null,
@@ -169,7 +224,7 @@ export class WebcimesModal {
             onCancelButton: () => { },
             onConfirmButton: () => { },
         };
-        this.options = Object.assign(Object.assign({}, defaults), options);
+        this.options = { ...defaults, ...options };
         // Call init method
         this.init();
     }
@@ -177,7 +232,6 @@ export class WebcimesModal {
      * Init modal
      */
     init() {
-        var _a, _b;
         // Create webcimesModals
         if (!document.querySelector(".webcimesModals")) {
             // Create webcimesModals
@@ -194,7 +248,7 @@ export class WebcimesModal {
             this.webcimesModals = document.querySelector(".webcimesModals");
         }
         // Create modal
-        this.webcimesModals.insertAdjacentHTML("beforeend", `<div class="modal ` + (this.options.setClass ? this.options.setClass : '') + ` ` + this.options.animationOnShow + `" ` + (this.options.setClass ? 'id="' + this.options.setId + '"' : '') + `>
+        this.webcimesModals.insertAdjacentHTML("beforeend", `<div class="modal ` + (this.options.setClass ? this.options.setClass : '') + ` ` + this.options.animationOnShow + `" ` + (this.options.setId ? 'id="' + this.options.setId + '"' : '') + `>
 				` + (this.options.titleHtml || this.options.showCloseButton ?
             `<div class="modalHeader ` + (this.options.stickyHeader ? 'sticky' : '') + ` ` + (this.options.moveFromHeader ? 'movable' : '') + `">
 						` + (this.options.titleHtml ? '<div class="title">' + this.options.titleHtml + '</div>' : '') + `
@@ -256,11 +310,11 @@ export class WebcimesModal {
         }
         // Event on cancel button
         if (this.options.buttonCancelHtml) {
-            (_a = this.modal.querySelector(".cancel")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", this.eventCancelButton);
+            this.modal.querySelector(".cancel")?.addEventListener("click", this.eventCancelButton);
         }
         // Event on confirm button
         if (this.options.buttonConfirmHtml) {
-            (_b = this.modal.querySelector(".confirm")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", this.eventConfirmButton);
+            this.modal.querySelector(".confirm")?.addEventListener("click", this.eventConfirmButton);
         }
         // Event click outside (on webcimesModals)
         this.webcimesModals.addEventListener("click", this.eventClickOutside);
@@ -318,14 +372,13 @@ export class WebcimesModal {
             this.modal.classList.add(this.options.animationOnDestroy);
             // Destroy all events from modal and remove webcimesModals or modal after animation duration
             setTimeout(() => {
-                var _a, _b;
                 if (typeof this.modal !== 'undefined') {
                     // Destroy all events from modal
                     if (this.options.buttonCancelHtml) {
-                        (_a = this.modal.querySelector(".cancel")) === null || _a === void 0 ? void 0 : _a.removeEventListener("click", this.eventCancelButton);
+                        this.modal.querySelector(".cancel")?.removeEventListener("click", this.eventCancelButton);
                     }
                     if (this.options.buttonConfirmHtml) {
-                        (_b = this.modal.querySelector(".confirm")) === null || _b === void 0 ? void 0 : _b.removeEventListener("click", this.eventConfirmButton);
+                        this.modal.querySelector(".confirm")?.removeEventListener("click", this.eventConfirmButton);
                     }
                     this.webcimesModals.removeEventListener("click", this.eventClickOutside);
                     this.modal.querySelectorAll(".close").forEach((el) => {
@@ -360,4 +413,8 @@ export class WebcimesModal {
         }
     }
 }
-//# sourceMappingURL=webcimes-modal.js.map
+
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});

@@ -22,25 +22,50 @@ You can use an importmap to resolve the arbitrary module names to complete paths
         <script type="importmap">
         {
             "imports": {
-                "webcimes-modal": "./node_modules/webcimes-modal/webcimes-modal.js"
+                "webcimes-modal": "./node_modules/webcimes-modal/dist/js/esm/webcimes-modal.esm.min.js"
             }
         }
         </script>
 	</head>
-		...
+	...
 ```
 
-## Usage
-
-### Import stylesheet:
+Or you can also set the full path directly in the import:
 ```html
-<link rel="stylesheet" href="./node_modules/webcimes-modal/webcimes-modal.css">
+<html>
+    <head>
+		...
+		<script type="module">
+			// Import webcimes-modal
+			import {WebcimesModal} from "./node_modules/webcimes-modal/dist/js/esm/webcimes-modal.esm.min.js";
+			...
+		</script>
+	</head>
+	...
 ```
 
-### Import javascript module:
+#### Import javascript module:
 ```javascript
 import { WebcimesModal } from "webcimes-modal";
 ```
+
+### UDM
+You can directly load the udm module in the script tag:
+```html
+<html>
+    <head>
+		...
+        <script src="./node_modules/webcimes-modal/dist/js/udm/webcimes-modal.udm.min.js" type="text/javascript"></script>
+	</head>
+	...
+```
+
+### Import stylesheet:
+```html
+<link rel="stylesheet" href="./node_modules/webcimes-modal/dist/css/webcimes-modal.min.css">
+```
+
+## Usage
 
 ### Call `WebcimesModal` for create modal:
 ```javascript

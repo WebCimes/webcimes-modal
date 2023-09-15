@@ -1,10 +1,11 @@
 {
   "name": "webcimes-modal",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Simply create and animate modals. It works with vanilla javascript + html + css.",
-  "main": "webcimes-modal.js",
+  "main": "./dist/js/udm/webcimes-modal.udm.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config webpack.config.ts --node-env=production",
+    "build:dev": "webpack --config webpack.config.ts --node-env=development"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,16 @@
   "bugs": {
     "url": "https://github.com/WebCimes/webcimes-modal/issues"
   },
-  "homepage": "https://github.com/WebCimes/webcimes-modal#readme"
+  "homepage": "https://github.com/WebCimes/webcimes-modal#readme",
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "mini-css-extract-plugin": "^2.7.6",
+    "remove-files-webpack-plugin": "^1.5.0",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
 }

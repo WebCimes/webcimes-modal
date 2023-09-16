@@ -12,7 +12,8 @@ const isProduction = process.env.NODE_ENV == 'production';
 // Config UDM
 const configUDM: webpack.Configuration = {
     mode: (isProduction ? "production" : "development"),
-    devtool: (isProduction ? false : "source-map"),
+    // devtool: (isProduction ? false : "source-map"),
+    devtool: "source-map",
     entry: {
         "webcimes-modal.udm": "./src/ts/webcimes-modal.ts",
         "webcimes-modal.udm.min": "./src/ts/webcimes-modal.ts",
@@ -46,7 +47,8 @@ const configUDM: webpack.Configuration = {
 // Config ESM
 const configESM: webpack.Configuration = {
     mode: (isProduction ? "production" : "development"),
-    devtool: (isProduction ? false : "source-map"),
+    // devtool: (isProduction ? false : "source-map"),
+    devtool: "source-map",
     entry: {
         "webcimes-modal.esm": "./src/ts/webcimes-modal.ts",
         "webcimes-modal.esm.min": "./src/ts/webcimes-modal.ts",
@@ -83,7 +85,8 @@ const configESM: webpack.Configuration = {
 // Config CSS + Remove plugin
 const configCSS: webpack.Configuration = {
     mode: (isProduction ? "production" : "development"),
-    devtool: (isProduction ? false : "source-map"),
+    // devtool: (isProduction ? false : "source-map"),
+    devtool: "source-map",
     entry: {
         "webcimes-modal": "./src/css/webcimes-modal.css",
         "webcimes-modal.min": "./src/css/webcimes-modal.css",

@@ -22,7 +22,7 @@ You can use an importmap to resolve the arbitrary module names to complete paths
         <script type="importmap">
         {
             "imports": {
-                "webcimes-modal": "./node_modules/webcimes-modal/dist/js/esm/webcimes-modal.esm.min.js"
+                "webcimes-modal": "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js"
             }
         }
         </script>
@@ -37,14 +37,14 @@ Or you can also set the full path directly in the import:
 		...
 		<script type="module">
 			// Import webcimes-modal
-			import {WebcimesModal} from "./node_modules/webcimes-modal/dist/js/esm/webcimes-modal.esm.min.js";
+			import {WebcimesModal} from "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js";
 			...
 		</script>
 	</head>
 	...
 ```
 
-#### Import javascript module:
+#### Then import javascript module:
 ```javascript
 import { WebcimesModal } from "webcimes-modal";
 ```
@@ -55,14 +55,14 @@ You can directly load the udm module in the script tag:
 <html>
     <head>
 		...
-        <script src="./node_modules/webcimes-modal/dist/js/udm/webcimes-modal.udm.min.js" type="text/javascript"></script>
+        <script src="./node_modules/webcimes-modal/dist/js/webcimes-modal.udm.js" type="text/javascript"></script>
 	</head>
 	...
 ```
 
 ### Import stylesheet:
 ```html
-<link rel="stylesheet" href="./node_modules/webcimes-modal/dist/css/webcimes-modal.min.css">
+<link rel="stylesheet" href="./node_modules/webcimes-modal/dist/css/webcimes-modal.css">
 ```
 
 ## Usage

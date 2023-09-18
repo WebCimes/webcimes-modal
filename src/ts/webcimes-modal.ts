@@ -195,35 +195,6 @@ export class WebcimesModal
 
 	/**
 	 * Create modal
-	 * @param {Object} options
-	 * @param {string | null} options.setId - set a specific id on the modal. default "null" 
-	 * @param {string | null} options.setClass - set a specific class on the modal, default "null"
-	 * @param {string} options.width - width (specify unit), default "auto"
-	 * @param {string} options.height - height (specify unit), default "auto"
-	 * @param {string | null} options.titleHtml - html for title, default "null"
-	 * @param {string | null} options.bodyHtml - html for body, default "null"
-	 * @param {string | null} options.buttonCancelHtml - html for cancel button, default "null"
-	 * @param {string | null} options.buttonConfirmHtml - html for confirm button, default "null"
-	 * @param {boolean} options.closeOnCancelButton - close modal after trigger cancel button, default "true"
-	 * @param {boolean} options.closeOnConfirmButton - close modal after trigger confirm button, default "true"
-	 * @param {boolean} options.showCloseButton - show close button, default "true"
-	 * @param {boolean} options.allowCloseOutside - allow the modal to close when clicked outside, default "true"
-	 * @param {boolean} options.allowMovement - ability to move modal, default "true"
-	 * @param {boolean} options.moveFromHeader - if allowMovement is set to "true", ability to move modal from header, default "true"
-	 * @param {boolean} options.moveFromBody - if allowMovement is set to "true", ability to move modal from body, default "false"
-	 * @param {boolean} options.moveFromFooter - if allowMovement is set to "true", ability to move modal from footer, default "true"
-	 * @param {boolean} options.stickyHeader - keep header sticky (visible) when scrolling, default "true"
-	 * @param {boolean} options.stickyFooter - keep footer sticky (visible) when scrolling, default "true"
-	 * @param {string | null} options.style - add extra css style to modal, default null
-	 * @param {"animDropDown" | "animFadeIn"} options.animationOnShow - "animDropDown" or "animFadeIn" for show animation, default "animDropDown"
-	 * @param {"animDropUp" | "animFadeOut"} options.animationOnDestroy - "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp"
-	 * @param {number} options.animationDuration - animation duration in ms, default "500"
-	 * @param {() => void} options.beforeShow - callback before show modal
-	 * @param {() => void} options.afterShow - callback after show modal
-	 * @param {() => void} options.beforeDestroy - callback before destroy modal
-	 * @param {() => void} options.afterDestroy - callback after destroy modal
-	 * @param {() => void} options.onCancelButton - callback after triggering cancel button
-	 * @param {() => void} options.onConfirmButton - callback after triggering confirm button
 	 */
 	constructor(options: Options)
 	{
@@ -286,7 +257,11 @@ export class WebcimesModal
 		}
 		else
 		{
+			// Get webcimesModals
 			this.webcimesModals = <HTMLElement>document.querySelector(".webcimesModals");
+
+			// Remove animFadeOut in case of create new modal after destroy the last one before (during animation duration)
+			this.webcimesModals.classList.remove("animFadeOut");
 		}
 	
 		// Create modal

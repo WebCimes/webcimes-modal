@@ -3,6 +3,7 @@
         "module": "ESNext",
         "target": "ESNext",
         "removeComments": false,
+        "declaration": true,
         "sourceMap": true,
         "noImplicitAny": true,
         "strictNullChecks": true,

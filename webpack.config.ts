@@ -6,31 +6,28 @@ import TerserPlugin from "terser-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import RemovePlugin from "remove-files-webpack-plugin";
-
-const isProduction = process.env.NODE_ENV == 'production';
+import TypescriptDeclarationPlugin from "typescript-declaration-webpack-plugin";
+// const isProduction = process.env.NODE_ENV == 'production';
 
 // Config UDM
 const configUDM: webpack.Configuration = {
-    mode: (isProduction ? "production" : "development"),
-    // devtool: (isProduction ? false : "source-map"),
+    mode: "production",
     devtool: "source-map",
     entry: {
         "webcimes-modal.udm": "./src/ts/webcimes-modal.ts",
-        "webcimes-modal.udm.min": "./src/ts/webcimes-modal.ts",
     },
     optimization: {
         minimize: true,
         minimizer: [
             new TerserPlugin({
-                test: /\.min\.js$/i,
+                test: /\.js$/i,
                 extractComments: false,
             }),
         ],
     },
     output: {
-        filename: "js/udm/[name].js",
+        filename: "js/[name].js",
         path: path.resolve(__dirname, "dist"),
-        // publicPath: "/dist/",
         libraryTarget: "umd",
         clean: false, // Clean the output directory before emit.
     },
@@ -42,22 +39,27 @@ const configUDM: webpack.Configuration = {
             },
         ],
     },
+    plugins: [
+        new TypescriptDeclarationPlugin({
+            out: "./js/webcimes-modal.udm.d.ts",
+            removeMergedDeclarations: false,
+            removeComments: false,
+        }),
+    ],
 };
 
 // Config ESM
 const configESM: webpack.Configuration = {
-    mode: (isProduction ? "production" : "development"),
-    // devtool: (isProduction ? false : "source-map"),
+    mode: "production",
     devtool: "source-map",
     entry: {
         "webcimes-modal.esm": "./src/ts/webcimes-modal.ts",
-        "webcimes-modal.esm.min": "./src/ts/webcimes-modal.ts",
     },
     optimization: {
         minimize: true,
         minimizer: [
             new TerserPlugin({
-                test: /\.min\.js$/i,
+                test: /\.js$/i,
                 extractComments: false,
             }),
         ],
@@ -66,9 +68,8 @@ const configESM: webpack.Configuration = {
         outputModule: true,
     },
     output: {
-        filename: "js/esm/[name].js",
+        filename: "js/[name].js",
         path: path.resolve(__dirname, "dist"),
-        // publicPath: "/dist/",
         libraryTarget: "module",
         clean: false, // Clean the output directory before emit.
     },
@@ -80,29 +81,33 @@ const configESM: webpack.Configuration = {
             },
         ],
     },
+    plugins: [
+        new TypescriptDeclarationPlugin({
+            out: "./js/webcimes-modal.esm.d.ts",
+            removeMergedDeclarations: false,
+            removeComments: false,
+        }),
+    ],
 };
 
 // Config CSS + Remove plugin
 const configCSS: webpack.Configuration = {
-    mode: (isProduction ? "production" : "development"),
-    // devtool: (isProduction ? false : "source-map"),
+    mode: "production",
     devtool: "source-map",
     entry: {
         "webcimes-modal": "./src/css/webcimes-modal.css",
-        "webcimes-modal.min": "./src/css/webcimes-modal.css",
     },
     optimization: {
         minimize: true,
         minimizer: [
             new CssMinimizerPlugin({
-                test: /\.min\.css$/i,
+                test: /\.css$/i,
             }),
         ],
     },
     output: {
         filename: "css/[name].js",
         path: path.resolve(__dirname, "dist"),
-        // publicPath: "/dist/",
         clean: false, // Clean the output directory before emit.
     },
     module: {

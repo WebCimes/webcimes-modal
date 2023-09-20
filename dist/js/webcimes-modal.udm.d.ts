@@ -4,6 +4,20 @@
  * Date: 2023-03-25
  */
 /**
+ * Global
+ */
+declare global {
+    /** Events */
+    interface GlobalEventHandlersEventMap {
+        beforeShow: CustomEvent;
+        afterShow: CustomEvent;
+        beforeDestroy: CustomEvent;
+        afterDestroy: CustomEvent;
+        onCancelButton: CustomEvent;
+        onConfirmButton: CustomEvent;
+    }
+}
+/**
  * Options
  */
 interface Options {
@@ -68,8 +82,11 @@ interface Options {
  * Class WebcimesModal
  */
 export declare class WebcimesModal {
+    /** Get the dom element containing all modals */
     webcimesModals: HTMLElement;
+    /** Get the dom element of the current modal */
     modal: HTMLElement;
+    /** Options of the current modal */
     private options;
     private eventCancelButton;
     private eventConfirmButton;
@@ -90,13 +107,13 @@ export declare class WebcimesModal {
      */
     constructor(options: Options);
     /**
-     * Init modal
+     * Initialization of the current modal
      */
-    init(): void;
+    private init;
     /**
-     * Destroy modal
+     * Destroy current modal
      */
     destroy(): void;
 }
 export {};
-
+//# sourceMappingURL=webcimes-modal.d.ts.map

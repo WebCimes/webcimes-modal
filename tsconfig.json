@@ -4,11 +4,13 @@
         "target": "ESNext",
         "removeComments": false,
         "declaration": true,
+        "declarationMap": true,
         "sourceMap": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "moduleResolution": "node",
     },
     "ts-node": {
         "compilerOptions": {

@@ -7,6 +7,21 @@
 "use strict";
 
 /**
+ * Global
+ */
+declare global {
+	/** Events */
+	interface GlobalEventHandlersEventMap {
+		beforeShow: CustomEvent;
+		afterShow: CustomEvent;
+		beforeDestroy: CustomEvent;
+		afterDestroy: CustomEvent;
+		onCancelButton: CustomEvent;
+		onConfirmButton: CustomEvent;
+	}
+}
+
+/**
  * Options
  */
 interface Options {
@@ -73,23 +88,33 @@ interface Options {
  */
 export class WebcimesModal
 {
+	/** Get the dom element containing all modals */
 	public webcimesModals: HTMLElement;
+
+	/** Get the dom element of the current modal */
 	public modal: HTMLElement;
+
+	/** Options of the current modal */
 	private options: Options;
+
 	private eventCancelButton: () => void = () => {
 		// Callback on cancel button
+		this.modal.dispatchEvent(new CustomEvent("onCancelButton"));
 		if(typeof this.options.onCancelButton === 'function')
 		{
 			this.options.onCancelButton();
 		}
 	};
+
 	private eventConfirmButton: () => void = () => {
 		// Callback on confirm button
+		this.modal.dispatchEvent(new CustomEvent("onConfirmButton"));
 		if(typeof this.options.onConfirmButton === 'function')
 		{
 			this.options.onConfirmButton();
 		}
 	};
+
 	private eventClickOutside: (e: Event) => void = (e) => {
 		if(e.target == this.webcimesModals)
 		{
@@ -110,10 +135,12 @@ export class WebcimesModal
 			}
 		}
 	};
+
 	private eventClickCloseButton: () => void = () => {
 		// Destroy modal
 		this.destroy();
 	};
+
 	private eventDragModalOnTop: (e: Event) => void = (e) => {
 		// Only if target is not close button (for bug in chrome)
 		if(!(<HTMLElement>e.target).closest(".close"))
@@ -127,10 +154,15 @@ export class WebcimesModal
 			}
 		}
 	};
+
 	private position: {x: number, y: number};
+
 	private offset: {x: number, y: number};
+
 	private isDragging: boolean = false;
+
 	private moveFromElements: HTMLElement[] = [];
+
 	private eventDragStart: (e: Event) => void = (e) => {
 		// Start drag only if it's not a button
 		if(!(<HTMLElement>e.target).closest("button"))
@@ -155,6 +187,7 @@ export class WebcimesModal
 			}
 		}
 	};
+
 	private eventMove: (e: Event) => void = (e) => {
 		if(this.isDragging)
 		{
@@ -178,15 +211,18 @@ export class WebcimesModal
 			this.modal.style.top  = (this.position.y + this.offset.y)+'px';
 		}
 	};
+
 	private eventDragStop: () => void = () => {
 		this.isDragging = false;
 	};
+	
 	private eventPreventSelectText: (e: Event) => void = (e) => {
 		if(this.isDragging)
 		{
 			e.preventDefault();
 		}
 	};
+
 	private eventResize: () => void = () => {
 		this.modal.style.removeProperty("left");
 		this.modal.style.removeProperty("top");
@@ -236,9 +272,9 @@ export class WebcimesModal
 	}
 
 	/**
-	 * Init modal
+	 * Initialization of the current modal
 	 */
-    init()
+    private init()
 	{
 		// Create webcimesModals
 		if(!document.querySelector(".webcimesModals"))
@@ -288,14 +324,14 @@ export class WebcimesModal
 		);
 		this.modal = <HTMLElement>this.webcimesModals.lastElementChild;
 		
-		// Callback before show modal
-		if(typeof this.options.beforeShow === 'function')
-		{
-			// Set a timeout of zero, to wait for some dom to load
-			setTimeout(() => {
-				this.options.beforeShow();
-			}, 0);
-		}
+		// Callback before show modal (set a timeout of zero, to wait for some dom to load)
+		setTimeout(() => {
+			this.modal.dispatchEvent(new CustomEvent("beforeShow"));
+			if(typeof this.options.beforeShow === 'function')
+			{
+					this.options.beforeShow();
+			}
+		}, 0);
 		
 		// Set animation duration for modal
 		this.modal.style.setProperty("animation-duration", this.options.animationDuration+"ms");
@@ -305,6 +341,7 @@ export class WebcimesModal
 			this.modal.classList.remove(this.options.animationOnShow);
 	
 			// Callback after show modal
+			this.modal.dispatchEvent(new CustomEvent("afterShow"));
 			if(typeof this.options.afterShow === 'function')
 			{
 				this.options.afterShow();
@@ -405,14 +442,15 @@ export class WebcimesModal
     }
 
 	/**
-	 * Destroy modal
+	 * Destroy current modal
 	 */
-	destroy()
+	public destroy()
 	{
 		// If modal is not already destroying
 		if(!this.modal.getAttribute("data-destroying"))
 		{
 			// Callback before destroy modal
+			this.modal.dispatchEvent(new CustomEvent("beforeDestroy"));
 			if(typeof this.options.beforeDestroy === 'function')
 			{
 				this.options.beforeDestroy();
@@ -480,6 +518,7 @@ export class WebcimesModal
 				}
 
 				// Callback after destroy modal
+				this.modal.dispatchEvent(new CustomEvent("afterDestroy"));
 				if(typeof this.options.afterDestroy === 'function')
 				{
 					this.options.afterDestroy();

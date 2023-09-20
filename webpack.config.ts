@@ -1,13 +1,11 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-import path from 'path';
+import path from "path";
 import webpack from "webpack";
 import TerserPlugin from "terser-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import RemovePlugin from "remove-files-webpack-plugin";
 import TypescriptDeclarationPlugin from "typescript-declaration-webpack-plugin";
-// const isProduction = process.env.NODE_ENV == 'production';
+// const isProduction = process.env.NODE_ENV == "production";
 
 // Config UDM
 const configUDM: webpack.Configuration = {
@@ -15,6 +13,12 @@ const configUDM: webpack.Configuration = {
     devtool: "source-map",
     entry: {
         "webcimes-modal.udm": "./src/ts/webcimes-modal.ts",
+    },
+    output: {
+        filename: "js/[name].js",
+        path: path.resolve(__dirname, "dist"),
+        libraryTarget: "umd",
+        clean: false, // Clean the output directory before emit.
     },
     optimization: {
         minimize: true,
@@ -24,12 +28,6 @@ const configUDM: webpack.Configuration = {
                 extractComments: false,
             }),
         ],
-    },
-    output: {
-        filename: "js/[name].js",
-        path: path.resolve(__dirname, "dist"),
-        libraryTarget: "umd",
-        clean: false, // Clean the output directory before emit.
     },
     module: {
         rules: [

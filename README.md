@@ -220,6 +220,18 @@ const myModal = new WebcimesModal({
 });
 ```
 
+You can also use `addEventListener` for get the events from the instance like this:
+
+```javascript
+// Get the instance
+const myModal = new WebcimesModal(...);
+
+// Create an event on the current modal
+myModal.modal.addEventListener("afterDestroy", () => {
+	console.log("after destroy");
+});
+```
+
 ### Destroy
 To destroy the modal, you have several ways:
 
@@ -242,7 +254,7 @@ myModal.destroy();
 ```
 
 ### Get dom element
-You can get the current dom element from the modal like this:
+You can get the dom element of the current modal like this:
 
 ```javascript
 // Get the instance
@@ -250,7 +262,7 @@ const myModal = new WebcimesModal(...);
 
 // Things
 
-// Then get the dom element
+// Then get the dom element of the current modal
 myModal.modal;
 ```
 
@@ -262,7 +274,7 @@ const myModal = new WebcimesModal(...);
 
 // Things
 
-// Then get the dom element
+// Then get the dom element containing all modals
 myModal.webcimesModals;
 ```
 

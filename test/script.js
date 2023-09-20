@@ -13,7 +13,11 @@ document.addEventListener("DOMContentLoaded", function()
     });
 
     document.querySelector(".modalBody")?.addEventListener("click", (e) => {
-        // modal1.options.moveFromBody = false;
+
+        modal1.modal.addEventListener("afterDestroy", () => {
+            console.log("event");
+        });
+
         new WebcimesModal({
             titleHtml: "My title 2",
             bodyHtml: "My Body 2",

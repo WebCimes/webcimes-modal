@@ -30,6 +30,11 @@ You can use an importmap to resolve the arbitrary module names to complete paths
 	...
 ```
 
+Then import javascript module:
+```javascript
+import { WebcimesModal } from "webcimes-modal";
+```
+
 Or you can also set the full path directly in the import:
 ```html
 <html>
@@ -37,14 +42,14 @@ Or you can also set the full path directly in the import:
 		...
 		<script type="module">
 			// Import webcimes-modal
-			import {WebcimesModal} from "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js";
+			import { WebcimesModal } from "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js";
 			...
 		</script>
 	</head>
 	...
 ```
 
-#### Then import javascript module:
+Or with JS bundlers (like Webpack) you can call directly the module :
 ```javascript
 import { WebcimesModal } from "webcimes-modal";
 ```
@@ -206,6 +211,31 @@ const myModal = new WebcimesModal({
 });
 ```
 
+### Get dom element
+You can get the dom element of the current modal like this:
+
+```javascript
+// Get the instance
+const myModal = new WebcimesModal(...);
+
+// Things
+
+// Then get the dom element of the current modal
+myModal.modal;
+```
+
+Or you can get the global container of all modals like this:
+
+```javascript
+// Get the instance
+const myModal = new WebcimesModal(...);
+
+// Things
+
+// Then get the dom element containing all modals
+myModal.webcimesModals;
+```
+
 ### Events:
 Multiple events exist, which allow to interact with the modal at each step. You can use all events below: 
 
@@ -251,31 +281,6 @@ const myModal = new WebcimesModal(...);
 
 // Then call the destroy method:
 myModal.destroy();
-```
-
-### Get dom element
-You can get the dom element of the current modal like this:
-
-```javascript
-// Get the instance
-const myModal = new WebcimesModal(...);
-
-// Things
-
-// Then get the dom element of the current modal
-myModal.modal;
-```
-
-Or you can get the global container of all modals like this:
-
-```javascript
-// Get the instance
-const myModal = new WebcimesModal(...);
-
-// Things
-
-// Then get the dom element containing all modals
-myModal.webcimesModals;
 ```
 
 ### Style modals:

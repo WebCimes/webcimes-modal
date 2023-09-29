@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function()
         animationOnDestroy: 'animDropUp', // "animDropUp" or "animFadeOut" for end animation, default "animDropUp"
         animationDuration: 500, // anim duration in ms, default "500"
         beforeShow: () => {console.log("before show");}, // callback before show modal
-        afterShow: () => {console.log("after show");}, // callback after destroy modal
+        afterShow: () => {console.log("after show");}, // callback after show modal
         beforeDestroy: () => {console.log("before destroy");}, // callback before destroy modal
         afterDestroy: () => {console.log("after destroy");}, // callback after destroy modal
         onCancelButton: () => {console.log("on cancel button");}, // callback after trigger cancel button

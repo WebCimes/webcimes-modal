@@ -329,7 +329,7 @@ export class WebcimesModal
 			this.modal.dispatchEvent(new CustomEvent("beforeShow"));
 			if(typeof this.options.beforeShow === 'function')
 			{
-					this.options.beforeShow();
+				this.options.beforeShow();
 			}
 		}, 0);
 		

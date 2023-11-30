@@ -83,7 +83,7 @@ interface Options {
  */
 export declare class WebcimesModal {
     /** Get the dom element containing all modals */
-    webcimesModals: HTMLElement;
+    modals: HTMLElement;
     /** Get the dom element of the current modal */
     modal: HTMLElement;
     /** Options of the current modal */

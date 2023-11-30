@@ -89,7 +89,7 @@ interface Options {
 export class WebcimesModal
 {
 	/** Get the dom element containing all modals */
-	public webcimesModals: HTMLElement;
+	public modals: HTMLElement;
 
 	/** Get the dom element of the current modal */
 	public modal: HTMLElement;
@@ -116,7 +116,7 @@ export class WebcimesModal
 	};
 
 	private eventClickOutside: (e: Event) => void = (e) => {
-		if(e.target == this.webcimesModals)
+		if(e.target == this.modals)
 		{
 			if(this.options.allowCloseOutside)
 			{
@@ -143,13 +143,13 @@ export class WebcimesModal
 
 	private eventDragModalOnTop: (e: Event) => void = (e) => {
 		// Only if target is not close button (for bug in chrome)
-		if(!(<HTMLElement>e.target).closest(".close"))
+		if(!(<HTMLElement>e.target).closest(".webcimes-modal__close"))
 		{
 			// If multiple modal, and modal not already on top (no next sibling), we place the current modal on the top
-			if(document.querySelectorAll(".modal").length > 1 && this.modal.nextElementSibling !== null)
+			if(document.querySelectorAll(".webcimes-modal").length > 1 && this.modal.nextElementSibling !== null)
 			{
 				let oldScrollTop = this.modal.scrollTop;
-				this.webcimesModals.insertAdjacentElement("beforeend", this.modal);
+				this.modals.insertAdjacentElement("beforeend", this.modal);
 				this.modal.scrollTop = oldScrollTop;
 			}
 		}
@@ -165,7 +165,7 @@ export class WebcimesModal
 
 	private eventDragStart: (e: Event) => void = (e) => {
 		// Start drag only if it's not a button
-		if(!(<HTMLElement>e.target).closest("button"))
+		if(!(<HTMLElement>e.target).closest(".webcimes-modal__button"))
 		{
 			this.isDragging = true;
 
@@ -276,53 +276,53 @@ export class WebcimesModal
 	 */
     private init()
 	{
-		// Create webcimesModals
-		if(!document.querySelector(".webcimesModals"))
+		// Create modals
+		if(!document.querySelector(".webcimes-modals"))
 		{
-			// Create webcimesModals
-			document.body.insertAdjacentHTML("beforeend", '<div class="webcimesModals animFadeIn"></div>');
-			this.webcimesModals = <HTMLElement>document.querySelector(".webcimesModals");
+			// Create modals
+			document.body.insertAdjacentHTML("beforeend", '<div class="webcimes-modals animFadeIn"></div>');
+			this.modals = <HTMLElement>document.querySelector(".webcimes-modals");
 			
-			// Set animation duration for webcimesModals
-			this.webcimesModals.style.setProperty("animation-duration", this.options.animationDuration+"ms");
+			// Set animation duration for modals
+			this.modals.style.setProperty("animation-duration", this.options.animationDuration+"ms");
 	
 			// Delete enter animation after animation delay
 			setTimeout(() => {
-				this.webcimesModals.classList.remove("animFadeIn");
+				this.modals.classList.remove("animFadeIn");
 			}, this.options.animationDuration);
 		}
 		else
 		{
-			// Get webcimesModals
-			this.webcimesModals = <HTMLElement>document.querySelector(".webcimesModals");
+			// Get modals
+			this.modals = <HTMLElement>document.querySelector(".webcimes-modals");
 
 			// Remove animFadeOut in case of create new modal after destroy the last one before (during animation duration)
-			this.webcimesModals.classList.remove("animFadeOut");
+			this.modals.classList.remove("animFadeOut");
 		}
 	
 		// Create modal
-		this.webcimesModals.insertAdjacentHTML("beforeend", 
-			`<div class="modal `+(this.options.setClass?this.options.setClass:'')+` `+this.options.animationOnShow+`" `+(this.options.setId?'id="'+this.options.setId+'"':'')+`>
+		this.modals.insertAdjacentHTML("beforeend", 
+			`<div class="webcimes-modal `+(this.options.setClass?this.options.setClass:'')+` `+this.options.animationOnShow+`" `+(this.options.setId?'id="'+this.options.setId+'"':'')+`>
 				`+(this.options.titleHtml||this.options.showCloseButton?
-					`<div class="modalHeader `+(this.options.stickyHeader?'sticky':'')+` `+(this.options.moveFromHeader?'movable':'')+`">
-						`+(this.options.titleHtml?'<div class="title">'+this.options.titleHtml+'</div>':'')+`
-						`+(this.options.showCloseButton?'<button class="close"></button>':'')+`
+					`<div class="webcimes-modal__header `+(this.options.stickyHeader?'webcimes-modal__header--is-sticky':'')+` `+(this.options.moveFromHeader?'webcimes-modal__header--is-movable':'')+`">
+						`+(this.options.titleHtml?'<div class="webcimes-modal__title">'+this.options.titleHtml+'</div>':'')+`
+						`+(this.options.showCloseButton?'<button class="webcimes-modal__button webcimes-modal__header-close webcimes-modal__close"></button>':'')+`
 					</div>`
 				:'')+`
 				`+(this.options.bodyHtml?
-					`<div class="modalBody `+(this.options.moveFromBody?'movable':'')+`">
+					`<div class="webcimes-modal__body `+(this.options.moveFromBody?'.webcimes-modal__body--is-movable':'')+`">
 						`+this.options.bodyHtml+`
 					</div>`
 				:'')+`
 				`+(this.options.buttonCancelHtml||this.options.buttonConfirmHtml?
-					`<div class="modalFooter `+(this.options.stickyFooter?'sticky':'')+` `+(this.options.moveFromFooter?'movable':'')+`">
-						`+(this.options.buttonCancelHtml?'<button class="cancel '+(this.options.closeOnCancelButton?'close':'')+'">'+this.options.buttonCancelHtml+'</button>':'')+`
-						`+(this.options.buttonConfirmHtml?'<button class="confirm '+(this.options.closeOnConfirmButton?'close':'')+'">'+this.options.buttonConfirmHtml+'</button>':'')+`
+					`<div class="webcimes-modal__footer `+(this.options.stickyFooter?'.webcimes-modal__footer--is-sticky':'')+` `+(this.options.moveFromFooter?'webcimes-modal__footer--is-movable':'')+`">
+						`+(this.options.buttonCancelHtml?'<button class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--cancel '+(this.options.closeOnCancelButton?'webcimes-modal__close':'')+'">'+this.options.buttonCancelHtml+'</button>':'')+`
+						`+(this.options.buttonConfirmHtml?'<button class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--confirm '+(this.options.closeOnConfirmButton?'webcimes-modal__close':'')+'">'+this.options.buttonConfirmHtml+'</button>':'')+`
 					</div>`
 				:'')+`
 			</div>`
 		);
-		this.modal = <HTMLElement>this.webcimesModals.lastElementChild;
+		this.modal = <HTMLElement>this.modals.lastElementChild;
 		
 		// Callback before show modal (set a timeout of zero, to wait for some dom to load)
 		setTimeout(() => {
@@ -375,27 +375,27 @@ export class WebcimesModal
 		// Style
 		if(this.options.style)
 		{
-			let oldStyle = this.modal.getAttribute("style");
+			let oldStyle = this.modal.getAttribute("style")??"";
 			this.modal.setAttribute("style", oldStyle+this.options.style);
 		}
 	
 		// Event on cancel button
 		if(this.options.buttonCancelHtml)
 		{
-			this.modal.querySelector(".cancel")?.addEventListener("click", this.eventCancelButton);
+			this.modal.querySelector(".webcimes-modal__footer-button--cancel")?.addEventListener("click", this.eventCancelButton);
 		}
 	
 		// Event on confirm button
 		if(this.options.buttonConfirmHtml)
 		{
-			this.modal.querySelector(".confirm")?.addEventListener("click", this.eventConfirmButton);
+			this.modal.querySelector(".webcimes-modal__footer-button--confirm")?.addEventListener("click", this.eventConfirmButton);
 		}
 		
-		// Event click outside (on webcimesModals)
-		this.webcimesModals.addEventListener("click", this.eventClickOutside);
+		// Event click outside (on modals)
+		this.modals.addEventListener("click", this.eventClickOutside);
 	
 		// Event close modal when click on close button
-		this.modal.querySelectorAll(".close").forEach((el) => {
+		this.modal.querySelectorAll(".webcimes-modal__close").forEach((el) => {
 			el.addEventListener("click", this.eventClickCloseButton);
 		});
 	
@@ -407,17 +407,17 @@ export class WebcimesModal
 		// Move modal
 		if(this.options.allowMovement && (this.options.moveFromHeader || this.options.moveFromBody || this.options.moveFromFooter))
 		{
-			if(this.options.moveFromHeader && this.modal.querySelector(".modalHeader"))
+			if(this.options.moveFromHeader && this.modal.querySelector(".webcimes-modal__header"))
 			{
-				this.moveFromElements.push(<HTMLElement>this.modal.querySelector(".modalHeader"));
+				this.moveFromElements.push(<HTMLElement>this.modal.querySelector(".webcimes-modal__header"));
 			}
-			if(this.options.moveFromBody && this.modal.querySelector(".modalBody"))
+			if(this.options.moveFromBody && this.modal.querySelector(".webcimes-modal__body"))
 			{
-				this.moveFromElements.push(<HTMLElement>this.modal.querySelector(".modalBody"));
+				this.moveFromElements.push(<HTMLElement>this.modal.querySelector(".webcimes-modal__body"));
 			}
-			if(this.options.moveFromFooter && this.modal.querySelector(".modalFooter"))
+			if(this.options.moveFromFooter && this.modal.querySelector(".webcimes-modal__footer"))
 			{
-				this.moveFromElements.push(<HTMLElement>this.modal.querySelector(".modalFooter"));
+				this.moveFromElements.push(<HTMLElement>this.modal.querySelector(".webcimes-modal__footer"));
 			}
 	
 			['mousedown', 'touchstart'].forEach((typeEvent) => {
@@ -456,17 +456,17 @@ export class WebcimesModal
 				this.options.beforeDestroy();
 			}
 
-			// Close webcimesModals (according the number of modal not already destroying)
-			if(document.querySelectorAll(".modal:not([data-destroying])").length == 1)
+			// Close modals (according the number of modal not already destroying)
+			if(document.querySelectorAll(".webcimes-modal:not([data-destroying])").length == 1)
 			{
-				this.webcimesModals.classList.add("animFadeOut");
+				this.modals.classList.add("animFadeOut");
 			}
 
 			// Close modal
 			this.modal.setAttribute("data-destroying", "1");
 			this.modal.classList.add(this.options.animationOnDestroy);
 
-			// Destroy all events from modal and remove webcimesModals or modal after animation duration
+			// Destroy all events from modal and remove modals or modal after animation duration
 			setTimeout(() => {
 				if(typeof this.modal !== 'undefined')
 				{
@@ -474,17 +474,17 @@ export class WebcimesModal
 
 					if(this.options.buttonCancelHtml)
 					{
-						this.modal.querySelector(".cancel")?.removeEventListener("click", this.eventCancelButton);
+						this.modal.querySelector(".webcimes-modal__footer-button--cancel")?.removeEventListener("click", this.eventCancelButton);
 					}
 
 					if(this.options.buttonConfirmHtml)
 					{
-						this.modal.querySelector(".confirm")?.removeEventListener("click", this.eventConfirmButton);
+						this.modal.querySelector(".webcimes-modal__footer-button--confirm")?.removeEventListener("click", this.eventConfirmButton);
 					}
 
-					this.webcimesModals.removeEventListener("click", this.eventClickOutside);
+					this.modals.removeEventListener("click", this.eventClickOutside);
 
-					this.modal.querySelectorAll(".close").forEach((el) => {
+					this.modal.querySelectorAll(".webcimes-modal__close").forEach((el) => {
 						el.removeEventListener("click", this.eventClickCloseButton);
 					});
 
@@ -513,8 +513,8 @@ export class WebcimesModal
 
 					window.removeEventListener("resize", this.eventResize);
 					
-					// Remove webcimesModals or modal according the number of modal
-					(document.querySelectorAll(".modal").length>1?this.modal:this.webcimesModals).remove();
+					// Remove modals or modal according the number of modal
+					(document.querySelectorAll(".webcimes-modal").length>1?this.modal:this.modals).remove();
 				}
 
 				// Callback after destroy modal

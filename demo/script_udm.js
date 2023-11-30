@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function()
         buttonCancelHtml: "Cancel", // html for cancel button, default "null"
         buttonConfirmHtml: "Confirm", // html for confirm button, default "null"
         closeOnConfirmButton: false, // close the modal after trigger confirm button, default "true"
-        afterShow: () => {console.log(myModal2.webcimesModals); console.log(myModal2.modal);}, // callback before show modal
+        afterShow: () => {console.log(myModal2.modals); console.log(myModal2.modal);}, // callback before show modal
         onConfirmButton: () => {myModal2.destroy();}, // callback after trigger confirm button
     });
 });

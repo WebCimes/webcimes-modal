@@ -115,17 +115,17 @@ document.addEventListener("DOMContentLoaded", function()
 After a creating a modal, the basic html structure look like this:
 
 ```html
-<div class="modal">
-	<div class="modalHeader">
-		<div class="title">My title</div>
-		<button class="close"></button>
+<div class="webcimes-modal">
+	<div class="webcimes-modal__header">
+		<div class="webcimes-modal__title">My title</div>
+		<button class="webcimes-modal__button webcimes-modal__header-close webcimes-modal__close"></button>
 	</div>
-	<div class="modalBody">
+	<div class="webcimes-modal__body">
 		My body
 	</div>
-	<div class="modalFooter">
-		<button class="cancel">Cancel</button>
-		<button class="confirm">Confirm</button>
+	<div class="webcimes-modal__footer">
+		<button class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--cancel">Cancel</button>
+		<button class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--confirm">Confirm</button>
 	</div>
 </div>
 ```
@@ -147,13 +147,13 @@ const myModal = new WebcimesModal({
 if any of these 4 fields is set to null (the default), it will not appear on the modal
 
 ### Remove specific structure of the modal:
-If you want to completely remove `modalHeader`, `modalBody` or `modalFooter` you need:
+If you want to completely remove `webcimes-modal__header`, `webcimes-modal__body` or `webcimes-modal__footer` you need:
 
-To remove `modalHeader`: set `titleHtml` to `null` and `showCloseButton` to `false`
+To remove `webcimes-modal__header`: set `titleHtml` to `null` and `showCloseButton` to `false`
 
-To remove `modalBody`: set `bodyHtml` to `null`
+To remove `webcimes-modal__body`: set `bodyHtml` to `null`
 
-To remove `modalFooter`: set `buttonCancelHtml` to `null` and `buttonConfirmHtml` to `null`
+To remove `webcimes-modal__footer`: set `buttonCancelHtml` to `null` and `buttonConfirmHtml` to `null`
 
 ### Scale the modal:
 By default the `height` and `width` are set to `auto`, the modal will also be sized according to the html content.
@@ -233,7 +233,7 @@ const myModal = new WebcimesModal(...);
 // Things
 
 // Then get the dom element containing all modals
-myModal.webcimesModals;
+myModal.modals;
 ```
 
 ### Events:
@@ -267,9 +267,9 @@ To destroy the modal, you have several ways:
 
 - You can use basic close button with `showCloseButton` property set to `true`
 
-- Use `cancel` or `confirm` button with `closeOnCancelButton` or `closeOnConfirmButton` property set to `true`
+- Use `webcimes-modal__footer-button--cancel` or `webcimes-modal__footer-button--confirm` button with `closeOnCancelButton` or `closeOnConfirmButton` property set to `true`
 
-- Add a custom button, and set its class to `close`
+- Add a custom button, and set its class to `webcimes-modal__close`
 
 - Destroy the modal manually with the `destroy` method, like this:
 
@@ -284,15 +284,15 @@ myModal.destroy();
 ```
 
 ### Style modals:
-You can style modal with the following field applying to the class of `.webcimesModals` (for background and z-index behind the modal) and `.webcimesModals > .modal` (for modal):
+You can style modal with the following field applying to the class of `.webcimes-modals` (for background and z-index behind the modal) and `.webcimes-modal` (for modal):
 
 ```css
-.webcimesModals
+.webcimes-modals
 {
 	--webcimes-modals-background: rgba(0,0,0,0.8);
 	--webcimes-modals-z-index: 5;
 }
-.webcimesModals > .modal
+.webcimes-modal
 {
 	--modal-color: inherit;
 	--modal-background: #fff;

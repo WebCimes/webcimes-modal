@@ -105,7 +105,7 @@ export declare class WebcimesModal {
     /**
      * Create modal
      */
-    constructor(options: Options);
+    constructor(options: Partial<Options>);
     /**
      * Initialization of the current modal
      */

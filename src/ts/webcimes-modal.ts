@@ -232,7 +232,7 @@ export class WebcimesModal
 	/**
 	 * Create modal
 	 */
-	constructor(options: Options)
+	constructor(options: Partial<Options>)
 	{
 		// Defaults
 		const defaults: Options = {

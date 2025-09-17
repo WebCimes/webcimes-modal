@@ -20,7 +20,7 @@ declare global {
 /**
  * Options
  */
-interface Options {
+export interface Options {
     /** set a specific id on the modal. default "null" */
     setId: string | null;
     /** set a specific class on the modal, default "null" */
@@ -115,5 +115,4 @@ export declare class WebcimesModal {
      */
     destroy(): void;
 }
-export {};
 //# sourceMappingURL=webcimes-modal.d.ts.map

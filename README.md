@@ -1,6 +1,6 @@
 # webcimes-modal
 
-Create and animate modals simply, you can use multiple modals at the same time, create alert or confirm modal with buttons, move modals, set title, set body, etc.. It works with vanilla javascript + html + css.
+Create and animate modals simply, you can use multiple modals at the same time, create alert or confirm modal with buttons, move modals, set title, set body, etc.. It works with vanilla javascript + html + css, no dependencies are required and the module is built in a very lightweight size.
 
 Once the `webcimes-modal` javascript is defined, we can simply call the WebcimesModal class with the desired options.
 

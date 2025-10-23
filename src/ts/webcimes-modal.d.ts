@@ -79,6 +79,18 @@ export interface Options {
     onConfirmButton: () => void;
 }
 /**
+ * Public interface for WebcimesModal instances
+ * This represents the actual accessible members of the instance
+ */
+export interface WebcimesModal {
+    /** Get the dom element containing all modals */
+    modals: HTMLElement;
+    /** Get the dom element of the current modal */
+    modal: HTMLElement;
+    /** Destroy the current modal */
+    destroy(): void;
+}
+/**
  * Class WebcimesModal
  */
 export declare class WebcimesModal {
@@ -115,4 +127,8 @@ export declare class WebcimesModal {
      */
     destroy(): void;
 }
+/**
+ * Factory function to create a WebcimesModal instance with proper typing
+ */
+export declare function createWebcimesModal(options: Partial<Options>): WebcimesModal;
 //# sourceMappingURL=webcimes-modal.d.ts.map

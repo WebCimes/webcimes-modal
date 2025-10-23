@@ -1,6 +1,6 @@
 {
   "name": "webcimes-modal",
-  "version": "1.2.3",
+  "version": "2.0.0",
   "description": "Simply create and animate modals. It works with vanilla javascript + html + css.",
   "main": "./dist/js/webcimes-modal.udm.js",
   "module": "./dist/js/webcimes-modal.esm.js",
@@ -33,6 +33,7 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "filemanager-webpack-plugin": "^8.0.0",
     "mini-css-extract-plugin": "^2.7.6",
+    "prettier": "^3.6.2",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",

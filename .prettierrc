@@ -1,0 +1,19 @@
+{
+    "printWidth": 100,
+    "tabWidth": 4,
+    "singleQuote": true,
+    "vueIndentScriptAndStyle": true,
+    "htmlWhitespaceSensitivity": "css",
+    "overrides": [
+        {
+            "files": [
+                "*.css",
+                "*.scss",
+                "*.postcss"
+            ],
+            "options": {
+                "printWidth": 200
+            }
+        }
+    ]
+}

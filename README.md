@@ -13,140 +13,180 @@ npm install webcimes-modal
 ```
 
 ### ESM
+
 Compared to JS bundlers (like Webpack), using ESM in the browser requires you to use the full path and filename instead of the module name.
 You can use an importmap to resolve the arbitrary module names to complete paths (not needed if you use JS bundlers):
+
 ```html
 <html>
-    <head>
-		...
-        <script type="importmap">
-        {
-            "imports": {
-                "webcimes-modal": "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js"
-            }
+  <head>
+    ...
+    <script type="importmap">
+      {
+        "imports": {
+          "webcimes-modal": "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js"
         }
-        </script>
-	</head>
-	...
+      }
+    </script>
+  </head>
+  ...
+</html>
 ```
 
 Then import javascript module:
+
 ```javascript
-import { WebcimesModal } from "webcimes-modal";
+import { createWebcimesModal } from "webcimes-modal";
 ```
 
 Or you can also set the full path directly in the import:
+
 ```html
 <html>
-    <head>
-		...
-		<script type="module">
-			// Import webcimes-modal
-			import { WebcimesModal } from "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js";
-			...
-		</script>
-	</head>
-	...
+  <head>
+    ...
+    <script type="module">
+      // Import webcimes-modal
+      import { createWebcimesModal } from "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js";
+      ...
+    </script>
+  </head>
+  ...
+</html>
 ```
 
 Or with JS bundlers (like Webpack) you can call directly the module :
+
 ```javascript
-import { WebcimesModal } from "webcimes-modal";
+import { createWebcimesModal } from "webcimes-modal";
 ```
 
 ### UDM
+
 You can directly load the udm module in the script tag:
+
 ```html
 <html>
-    <head>
-		...
-        <script src="./node_modules/webcimes-modal/dist/js/webcimes-modal.udm.js" type="text/javascript"></script>
-	</head>
-	...
+  <head>
+    ...
+    <script
+      src="./node_modules/webcimes-modal/dist/js/webcimes-modal.udm.js"
+      type="text/javascript"
+    ></script>
+  </head>
+  ...
+</html>
 ```
 
 ### Import stylesheet:
+
 ```html
-<link rel="stylesheet" href="./node_modules/webcimes-modal/dist/css/webcimes-modal.css">
+<link
+  rel="stylesheet"
+  href="./node_modules/webcimes-modal/dist/css/webcimes-modal.css"
+/>
 ```
 
 ## Usage
 
-### Call `WebcimesModal` for create modal:
+### Call `createWebcimesModal()` to create modal:
+
 ```javascript
-// Wait for dom content loaded or call WebcimesModal before the end of body
-document.addEventListener("DOMContentLoaded", function()
-{
-	// Create modal
-	const myModal = new WebcimesModal({
-		setId: null, // set a specific id on the modal. default "null" 
-		setClass: null, // set a specific class on the modal, default "null"
-		width: 'auto', // width (specify unit), default "auto"
-		height: 'auto', // height (specify unit), default "auto"
-		titleHtml: "My title", // html for title, default "null"
-		bodyHtml: "My Body", // html for body, default "null"
-		buttonCancelHtml: "Cancel", // html for cancel button, default "null"
-		buttonConfirmHtml: "Confirm", // html for confirm button, default "null"
-		closeOnCancelButton: false, // close modal after trigger cancel button, default "true"
-		closeOnConfirmButton: true, // close modal after trigger confirm button, default "true"
-		showCloseButton: true, // show close button, default "true"
-		allowCloseOutside: false, // allow the modal to close when clicked outside, default "true"
-		allowMovement: true, // ability to move modal, default "true"
-		moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
-		moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
-		moveFromFooter: true, // if allowMovement is set to "true", ability to move modal from footer, default "true"
-		stickyHeader: true, // keep header sticky (visible) when scrolling, default "true"
-		stickyFooter: true, // keep footer sticky (visible) when scrolling, default "true"
-		style: null, // add extra css style to modal, default null
-		animationOnShow: 'animDropDown', // "animDropDown" or "animFadeIn" for show animation, default "animDropDown"
-		animationOnDestroy: 'animDropUp', // "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp"
-		animationDuration: 500, // animation duration in ms, default "500"
-		beforeShow: () => {console.log("before show");}, // callback before show modal
-		afterShow: () => {console.log("after show");}, // callback after show modal
-		beforeDestroy: () => {console.log("before destroy");}, // callback before destroy modal
-		afterDestroy: () => {console.log("after destroy");}, // callback after destroy modal
-		onCancelButton: () => {console.log("on cancel button");}, // callback after triggering cancel button
-		onConfirmButton: () => {console.log("on confirm button");}, // callback after triggering confirm button
-	});
+// Wait for dom content loaded or call createWebcimesModal before the end of body
+document.addEventListener("DOMContentLoaded", function () {
+  // Create modal
+  const myModal = createWebcimesModal({
+    setId: null, // set a specific id on the modal. default "null"
+    setClass: null, // set a specific class on the modal, default "null"
+    width: "auto", // width (specify unit), default "auto"
+    height: "auto", // height (specify unit), default "auto"
+    titleHtml: "My title", // html for title, default "null"
+    bodyHtml: "My Body", // html for body, default "null"
+    buttonCancelHtml: "Cancel", // html for cancel button, default "null"
+    buttonConfirmHtml: "Confirm", // html for confirm button, default "null"
+    closeOnCancelButton: false, // close modal after trigger cancel button, default "true"
+    closeOnConfirmButton: true, // close modal after trigger confirm button, default "true"
+    showCloseButton: true, // show close button, default "true"
+    allowCloseOutside: false, // allow the modal to close when clicked outside, default "true"
+    allowMovement: true, // ability to move modal, default "true"
+    moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
+    moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
+    moveFromFooter: true, // if allowMovement is set to "true", ability to move modal from footer, default "true"
+    stickyHeader: true, // keep header sticky (visible) when scrolling, default "true"
+    stickyFooter: true, // keep footer sticky (visible) when scrolling, default "true"
+    style: null, // add extra css style to modal, default null
+    animationOnShow: "animDropDown", // "animDropDown" or "animFadeIn" for show animation, default "animDropDown"
+    animationOnDestroy: "animDropUp", // "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp"
+    animationDuration: 500, // animation duration in ms, default "500"
+    beforeShow: () => {
+      console.log("before show");
+    }, // callback before show modal
+    afterShow: () => {
+      console.log("after show");
+    }, // callback after show modal
+    beforeDestroy: () => {
+      console.log("before destroy");
+    }, // callback before destroy modal
+    afterDestroy: () => {
+      console.log("after destroy");
+    }, // callback after destroy modal
+    onCancelButton: () => {
+      console.log("on cancel button");
+    }, // callback after triggering cancel button
+    onConfirmButton: () => {
+      console.log("on confirm button");
+    }, // callback after triggering confirm button
+  });
 });
 ```
 
 ### Modal html structure:
+
 After a creating a modal, the basic html structure look like this:
 
 ```html
 <div class="webcimes-modal">
-	<div class="webcimes-modal__header">
-		<div class="webcimes-modal__title">My title</div>
-		<button class="webcimes-modal__button webcimes-modal__header-close webcimes-modal__close"></button>
-	</div>
-	<div class="webcimes-modal__body">
-		My body
-	</div>
-	<div class="webcimes-modal__footer">
-		<button class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--cancel">Cancel</button>
-		<button class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--confirm">Confirm</button>
-	</div>
+  <div class="webcimes-modal__header">
+    <div class="webcimes-modal__title">My title</div>
+    <button
+      class="webcimes-modal__button webcimes-modal__header-close webcimes-modal__close"
+    ></button>
+  </div>
+  <div class="webcimes-modal__body">My body</div>
+  <div class="webcimes-modal__footer">
+    <button
+      class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--cancel"
+    >
+      Cancel
+    </button>
+    <button
+      class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--confirm"
+    >
+      Confirm
+    </button>
+  </div>
 </div>
 ```
 
 ### Set basic parameter on the modal:
+
 All parameters are optionnal, but to set the base message on the modal you can use `titleHtml` to create the title, `bodyHtml` contain the main message of the modal, and `buttonCancelHtml` & `buttonConfirmHtml` contain the html for each button.
 
-For these 4 fields you can just directly write the text or define tags, or call html from an element like this : 
+For these 4 fields you can just directly write the text or define tags, or call html from an element like this :
 
 ```javascript
-const myModal = new WebcimesModal({
-	titleHtml: "My title <span style='color:red'>with red color</span>", // directly put an html tag or attribute like span and style
-	bodyHtml: document.querySelector("#myID").outerHTML, // set html from an HTML element
-	buttonCancelHtml: "Cancel <img src='my-url' alt=''>", // put the img tag
-	buttonConfirmHtml: "Confirm", // or just text
+const myModal = CreateWebcimesModal({
+  titleHtml: "My title <span style='color:red'>with red color</span>", // directly put an html tag or attribute like span and style
+  bodyHtml: document.querySelector("#myID").outerHTML, // set html from an HTML element
+  buttonCancelHtml: "Cancel <img src='my-url' alt=''>", // put the img tag
+  buttonConfirmHtml: "Confirm", // or just text
 });
 ```
 
 if any of these 4 fields is set to null (the default), it will not appear on the modal
 
 ### Remove specific structure of the modal:
+
 If you want to completely remove `webcimes-modal__header`, `webcimes-modal__body` or `webcimes-modal__footer` you need:
 
 To remove `webcimes-modal__header`: set `titleHtml` to `null` and `showCloseButton` to `false`
@@ -156,45 +196,49 @@ To remove `webcimes-modal__body`: set `bodyHtml` to `null`
 To remove `webcimes-modal__footer`: set `buttonCancelHtml` to `null` and `buttonConfirmHtml` to `null`
 
 ### Scale the modal:
+
 By default the `height` and `width` are set to `auto`, the modal will also be sized according to the html content.
 
 You can also set the determined `height` or `width` by indicating the value with a number and a unit.
 
 ```javascript
-const myModal = new WebcimesModal({
-	width: '80vm',
-	height: '200px',
+const myModal = createWebcimesModal({
+  width: "80vm",
+  height: "200px",
 });
 ```
 
 ### Modal behavior:
+
 Below are the different options for customize the modal behavior.
 
 ```javascript
-const myModal = new WebcimesModal({
-	closeOnCancelButton: false, // close modal after triggering cancel button, default "true"
-	closeOnConfirmButton: false, // close modal after triggering confirm button, default "true"
-	showCloseButton: true, // show close button, default "true"
-	allowCloseOutside: false, // allows the modal to close when clicked outside, default "true"
-	allowMovement: true, // ability to move modal, default "true"
-	moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
-	moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
-	moveFromFooter: true, // if allowMovement is set to "true", ability to move modal from footer, default "true"
-	stickyHeader: true, // keep header sticky (visible) when scrolling, default "true"
-	stickyFooter: true, // keep footer sticky (visible) when scrolling, default "true"
+const myModal = createWebcimesModal({
+  closeOnCancelButton: false, // close modal after triggering cancel button, default "true"
+  closeOnConfirmButton: false, // close modal after triggering confirm button, default "true"
+  showCloseButton: true, // show close button, default "true"
+  allowCloseOutside: false, // allows the modal to close when clicked outside, default "true"
+  allowMovement: true, // ability to move modal, default "true"
+  moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
+  moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
+  moveFromFooter: true, // if allowMovement is set to "true", ability to move modal from footer, default "true"
+  stickyHeader: true, // keep header sticky (visible) when scrolling, default "true"
+  stickyFooter: true, // keep footer sticky (visible) when scrolling, default "true"
 });
 ```
 
 ### Add extra style to the modal:
+
 You can define the style of the modal with `css`, but you can also use the style property which allows to directly add an additional style to the modal.
 
 ```javascript
-const myModal = new WebcimesModal({
-	style: "background:black; color:#fff; text-align:center;",
+const myModal = createWebcimesModal({
+  style: "background:black; color:#fff; text-align:center;",
 });
 ```
 
 ### Animation:
+
 Once the modal is created, it will be shown and hidden with an animation, you can choose between two animations for each case:
 
 For `animationOnShow` you can choose between `animDropDown` or `animFadeIn`
@@ -204,19 +248,20 @@ For `animationOnDestroy` you can choose between `animDropUp` or `animFadeOut`
 And you can set the duration of all animation by setting `animationDuration` with a number in ms.
 
 ```javascript
-const myModal = new WebcimesModal({
-	animationOnShow: 'animDropDown', // "animDropDown" or "animFadeIn" for show animation, default "animDropDown"
-	animationOnDestroy: 'animDropUp', // "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp"
-	animationDuration: 500, // anim duration in ms, default "500"
+const myModal = createWebcimesModal({
+  animationOnShow: "animDropDown", // "animDropDown" or "animFadeIn" for show animation, default "animDropDown"
+  animationOnDestroy: "animDropUp", // "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp"
+  animationDuration: 500, // anim duration in ms, default "500"
 });
 ```
 
 ### Get dom element
+
 You can get the dom element of the current modal like this:
 
 ```javascript
 // Get the instance
-const myModal = new WebcimesModal(...);
+const myModal = createWebcimesModal(...);
 
 // Things
 
@@ -228,7 +273,7 @@ Or you can get the global container of all modals like this:
 
 ```javascript
 // Get the instance
-const myModal = new WebcimesModal(...);
+const myModal = createWebcimesModal(...);
 
 // Things
 
@@ -237,16 +282,29 @@ myModal.modals;
 ```
 
 ### Events:
-Multiple events exist, which allow to interact with the modal at each step. You can use all events below: 
+
+Multiple events exist, which allow to interact with the modal at each step. You can use all events below:
 
 ```javascript
-const myModal = new WebcimesModal({
-	beforeShow: () => {console.log("before show");}, // callback before show modal
-	afterShow: () => {console.log("after show");}, // callback after show modal
-	beforeDestroy: () => {console.log("before destroy");}, // callback before destroy modal
-	afterDestroy: () => {console.log("after destroy");}, // callback after destroy modal
-	onCancelButton: () => {console.log("on cancel button");}, // callback after triggering cancel button
-	onConfirmButton: () => {console.log("on confirm button");}, // callback after triggering confirm button
+const myModal = createWebcimesModal({
+  beforeShow: () => {
+    console.log("before show");
+  }, // callback before show modal
+  afterShow: () => {
+    console.log("after show");
+  }, // callback after show modal
+  beforeDestroy: () => {
+    console.log("before destroy");
+  }, // callback before destroy modal
+  afterDestroy: () => {
+    console.log("after destroy");
+  }, // callback after destroy modal
+  onCancelButton: () => {
+    console.log("on cancel button");
+  }, // callback after triggering cancel button
+  onConfirmButton: () => {
+    console.log("on confirm button");
+  }, // callback after triggering confirm button
 });
 ```
 
@@ -254,7 +312,7 @@ You can also use `addEventListener` for get the events from the instance like th
 
 ```javascript
 // Get the instance
-const myModal = new WebcimesModal(...);
+const myModal = createWebcimesModal(...);
 
 // Create an event on the current modal
 myModal.modal.addEventListener("afterDestroy", () => {
@@ -263,6 +321,7 @@ myModal.modal.addEventListener("afterDestroy", () => {
 ```
 
 ### Destroy
+
 To destroy the modal, you have several ways:
 
 - You can use basic close button with `showCloseButton` property set to `true`
@@ -275,7 +334,7 @@ To destroy the modal, you have several ways:
 
 ```javascript
 // Get the instance
-const myModal = new WebcimesModal(...);
+const myModal = createWebcimesModal(...);
 
 // Things
 
@@ -284,31 +343,31 @@ myModal.destroy();
 ```
 
 ### Style modals:
+
 You can style modal with the following field applying to the class of `.webcimes-modals` (for background and z-index behind the modal) and `.webcimes-modal` (for modal):
 
 ```css
-.webcimes-modals
-{
-	--webcimes-modals-background: rgba(0,0,0,0.8);
-	--webcimes-modals-z-index: 5;
+.webcimes-modals {
+  --webcimes-modals-background: rgba(0, 0, 0, 0.8);
+  --webcimes-modals-z-index: 5;
 }
-.webcimes-modal
-{
-	--modal-color: inherit;
-	--modal-background: #fff;
-	--modal-border-color: #ddd;
-	--modal-box-shadow: 1px 1px 3px 0px #444;
-	--modal-title-font-size: 24px;
-	--modal-button-cancel-background: rgba(102,102,102,1);
-	--modal-button-cancel-background-hover: rgba(102,102,102,0.7);
-	--modal-button-cancel-color: #fff;
-	--modal-button-cancel-color-hover: #fff;
-	--modal-button-confirm-background: rgba(0,0,0,1);
-	--modal-button-confirm-background-hover: rgba(0,0,0,0.7);
-	--modal-button-confirm-color: #fff;
-	--modal-button-confirm-color-hover: #fff;
+.webcimes-modal {
+  --modal-color: inherit;
+  --modal-background: #fff;
+  --modal-border-color: #ddd;
+  --modal-box-shadow: 1px 1px 3px 0px #444;
+  --modal-title-font-size: 24px;
+  --modal-button-cancel-background: rgba(102, 102, 102, 1);
+  --modal-button-cancel-background-hover: rgba(102, 102, 102, 0.7);
+  --modal-button-cancel-color: #fff;
+  --modal-button-cancel-color-hover: #fff;
+  --modal-button-confirm-background: rgba(0, 0, 0, 1);
+  --modal-button-confirm-background-hover: rgba(0, 0, 0, 0.7);
+  --modal-button-confirm-color: #fff;
+  --modal-button-confirm-color-hover: #fff;
 }
 ```
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)

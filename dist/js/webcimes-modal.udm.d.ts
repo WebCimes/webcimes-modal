@@ -60,9 +60,9 @@ export interface Options {
     /** add extra css style to modal, default null */
     style: string | null;
     /** "animDropDown" or "animFadeIn" for show animation, default "animDropDown" */
-    animationOnShow: "animDropDown" | "animFadeIn";
+    animationOnShow: 'animDropDown' | 'animFadeIn';
     /** "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp" */
-    animationOnDestroy: "animDropUp" | "animFadeOut";
+    animationOnDestroy: 'animDropUp' | 'animFadeOut';
     /** animation duration in ms, default "500" */
     animationDuration: number;
     /** callback before show modal */
@@ -79,40 +79,19 @@ export interface Options {
     onConfirmButton: () => void;
 }
 /**
- * Class WebcimesModal
+ * Public interface for WebcimesModal instances
+ * This represents the actual accessible members of the instance
  */
-export declare class WebcimesModal {
+export interface WebcimesModal {
     /** Get the dom element containing all modals */
     modals: HTMLElement;
     /** Get the dom element of the current modal */
     modal: HTMLElement;
-    /** Options of the current modal */
-    private options;
-    private eventCancelButton;
-    private eventConfirmButton;
-    private eventClickOutside;
-    private eventClickCloseButton;
-    private eventDragModalOnTop;
-    private position;
-    private offset;
-    private isDragging;
-    private moveFromElements;
-    private eventDragStart;
-    private eventMove;
-    private eventDragStop;
-    private eventPreventSelectText;
-    private eventResize;
-    /**
-     * Create modal
-     */
-    constructor(options: Partial<Options>);
-    /**
-     * Initialization of the current modal
-     */
-    private init;
-    /**
-     * Destroy current modal
-     */
+    /** Destroy the current modal */
     destroy(): void;
 }
+/**
+ * Factory function to create a WebcimesModal instance with proper typing
+ */
+export declare function createWebcimesModal(options: Partial<Options>): WebcimesModal;
 //# sourceMappingURL=webcimes-modal.d.ts.map

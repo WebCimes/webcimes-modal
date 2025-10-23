@@ -60,9 +60,9 @@ export interface Options {
     /** add extra css style to modal, default null */
     style: string | null;
     /** "animDropDown" or "animFadeIn" for show animation, default "animDropDown" */
-    animationOnShow: "animDropDown" | "animFadeIn";
+    animationOnShow: 'animDropDown' | 'animFadeIn';
     /** "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp" */
-    animationOnDestroy: "animDropUp" | "animFadeOut";
+    animationOnDestroy: 'animDropUp' | 'animFadeOut';
     /** animation duration in ms, default "500" */
     animationDuration: number;
     /** callback before show modal */
@@ -88,43 +88,6 @@ export interface WebcimesModal {
     /** Get the dom element of the current modal */
     modal: HTMLElement;
     /** Destroy the current modal */
-    destroy(): void;
-}
-/**
- * Class WebcimesModal
- */
-export declare class WebcimesModal {
-    /** Get the dom element containing all modals */
-    modals: HTMLElement;
-    /** Get the dom element of the current modal */
-    modal: HTMLElement;
-    /** Options of the current modal */
-    private options;
-    private eventCancelButton;
-    private eventConfirmButton;
-    private eventClickOutside;
-    private eventClickCloseButton;
-    private eventDragModalOnTop;
-    private position;
-    private offset;
-    private isDragging;
-    private moveFromElements;
-    private eventDragStart;
-    private eventMove;
-    private eventDragStop;
-    private eventPreventSelectText;
-    private eventResize;
-    /**
-     * Create modal
-     */
-    constructor(options: Partial<Options>);
-    /**
-     * Initialization of the current modal
-     */
-    private init;
-    /**
-     * Destroy current modal
-     */
     destroy(): void;
 }
 /**

@@ -1,9 +1,9 @@
 // Import webcimes-modal
-import { createWebcimesModal } from '../dist/js/webcimes-modal.esm.js';
+import { CreateWebcimesModal } from '../dist/js/webcimes-modal.esm.js';
 
 // Wait for dom content loaded
 document.addEventListener('DOMContentLoaded', function () {
-    let modal1 = createWebcimesModal({
+    let modal1 = CreateWebcimesModal({
         titleHtml: 'My title',
         bodyHtml: 'My Body',
         afterDestroy: () => {
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('event');
         });
 
-        createWebcimesModal({
+        CreateWebcimesModal({
             titleHtml: 'My title 2',
             bodyHtml: 'My Body 2',
             afterDestroy: () => {

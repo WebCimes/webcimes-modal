@@ -591,6 +591,6 @@ class WebcimesModalImpl implements WebcimesModal {
 /**
  * Factory function to create a WebcimesModal instance with proper typing
  */
-export function createWebcimesModal(options: Partial<Options>): WebcimesModal {
+export function CreateWebcimesModal(options: Partial<Options>): WebcimesModal {
     return new WebcimesModalImpl(options);
 }

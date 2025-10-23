@@ -36,7 +36,7 @@ You can use an importmap to resolve the arbitrary module names to complete paths
 Then import javascript module:
 
 ```javascript
-import { CreateWebcimesModal } from 'webcimes-modal';
+import { createWebcimesModal } from 'webcimes-modal';
 ```
 
 Or you can also set the full path directly in the import:
@@ -47,7 +47,7 @@ Or you can also set the full path directly in the import:
         ...
         <script type="module">
             // Import webcimes-modal
-            import { CreateWebcimesModal } from "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js";
+            import { createWebcimesModal } from "./node_modules/webcimes-modal/dist/js/webcimes-modal.esm.js";
             ...
         </script>
     </head>
@@ -58,7 +58,7 @@ Or you can also set the full path directly in the import:
 Or with JS bundlers (like Webpack) you can call directly the module :
 
 ```javascript
-import { CreateWebcimesModal } from 'webcimes-modal';
+import { createWebcimesModal } from 'webcimes-modal';
 ```
 
 ### UDM
@@ -86,13 +86,13 @@ You can directly load the udm module in the script tag:
 
 ## Usage
 
-### Call `CreateWebcimesModal()` to create modal:
+### Call `createWebcimesModal()` to create modal:
 
 ```javascript
-// Wait for dom content loaded or call CreateWebcimesModal before the end of body
+// Wait for dom content loaded or call createWebcimesModal before the end of body
 document.addEventListener('DOMContentLoaded', function () {
     // Create modal
-    const myModal = CreateWebcimesModal({
+    const myModal = createWebcimesModal({
         setId: null, // set a specific id on the modal. default "null"
         setClass: null, // set a specific class on the modal, default "null"
         width: 'auto', // width (specify unit), default "auto"
@@ -172,7 +172,7 @@ All parameters are optionnal, but to set the base message on the modal you can u
 For these 4 fields you can just directly write the text or define tags, or call html from an element like this :
 
 ```javascript
-const myModal = CreateWebcimesModal({
+const myModal = createWebcimesModal({
     titleHtml: "My title <span style='color:red'>with red color</span>", // directly put an html tag or attribute like span and style
     bodyHtml: document.querySelector('#myID').outerHTML, // set html from an HTML element
     buttonCancelHtml: "Cancel <img src='my-url' alt=''>", // put the img tag
@@ -199,7 +199,7 @@ By default the `height` and `width` are set to `auto`, the modal will also be si
 You can also set the determined `height` or `width` by indicating the value with a number and a unit.
 
 ```javascript
-const myModal = CreateWebcimesModal({
+const myModal = createWebcimesModal({
     width: '80vm',
     height: '200px',
 });
@@ -210,7 +210,7 @@ const myModal = CreateWebcimesModal({
 Below are the different options for customize the modal behavior.
 
 ```javascript
-const myModal = CreateWebcimesModal({
+const myModal = createWebcimesModal({
     closeOnCancelButton: false, // close modal after triggering cancel button, default "true"
     closeOnConfirmButton: false, // close modal after triggering confirm button, default "true"
     showCloseButton: true, // show close button, default "true"
@@ -229,7 +229,7 @@ const myModal = CreateWebcimesModal({
 You can define the style of the modal with `css`, but you can also use the style property which allows to directly add an additional style to the modal.
 
 ```javascript
-const myModal = CreateWebcimesModal({
+const myModal = createWebcimesModal({
     style: 'background:black; color:#fff; text-align:center;',
 });
 ```
@@ -245,7 +245,7 @@ For `animationOnDestroy` you can choose between `animDropUp` or `animFadeOut`
 And you can set the duration of all animation by setting `animationDuration` with a number in ms.
 
 ```javascript
-const myModal = CreateWebcimesModal({
+const myModal = createWebcimesModal({
     animationOnShow: 'animDropDown', // "animDropDown" or "animFadeIn" for show animation, default "animDropDown"
     animationOnDestroy: 'animDropUp', // "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp"
     animationDuration: 500, // anim duration in ms, default "500"
@@ -258,7 +258,7 @@ You can get the dom element of the current modal like this:
 
 ```javascript
 // Get the instance
-const myModal = CreateWebcimesModal(...);
+const myModal = createWebcimesModal(...);
 
 // Things
 
@@ -270,7 +270,7 @@ Or you can get the global container of all modals like this:
 
 ```javascript
 // Get the instance
-const myModal = CreateWebcimesModal(...);
+const myModal = createWebcimesModal(...);
 
 // Things
 
@@ -283,7 +283,7 @@ myModal.modals;
 Multiple events exist, which allow to interact with the modal at each step. You can use all events below:
 
 ```javascript
-const myModal = CreateWebcimesModal({
+const myModal = createWebcimesModal({
     beforeShow: () => {
         console.log('before show');
     }, // callback before show modal
@@ -309,7 +309,7 @@ You can also use `addEventListener` for get the events from the instance like th
 
 ```javascript
 // Get the instance
-const myModal = CreateWebcimesModal(...);
+const myModal = createWebcimesModal(...);
 
 // Create an event on the current modal
 myModal.modal.addEventListener("afterDestroy", () => {
@@ -331,7 +331,7 @@ To destroy the modal, you have several ways:
 
 ```javascript
 // Get the instance
-const myModal = CreateWebcimesModal(...);
+const myModal = createWebcimesModal(...);
 
 // Things
 

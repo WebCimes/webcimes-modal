@@ -1,9 +1,9 @@
 // Import webcimes-modal
-import { CreateWebcimesModal } from '../dist/js/webcimes-modal.esm.js';
+import { createWebcimesModal } from '../dist/js/webcimes-modal.esm.js';
 
 // Wait for dom content loaded
 document.addEventListener('DOMContentLoaded', function () {
-    const myModal = CreateWebcimesModal({
+    const myModal = createWebcimesModal({
         setId: null, // set specific id to the modal, default "null"
         setClass: null, // set specific class to the modal, default "null"
         width: 'auto', // width (specify the unit), default "auto"
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, // callback after trigger confirm button
     });
 
-    const myModal2 = CreateWebcimesModal({
+    const myModal2 = createWebcimesModal({
         titleHtml: 'My title', // html for title, default "null"
         bodyHtml: document.querySelector('.test').outerHTML, // html for body, default "null"
         buttonCancelHtml: 'Cancel', // html for cancel button, default "null"

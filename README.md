@@ -97,8 +97,10 @@ document.addEventListener('DOMContentLoaded', function () {
         setClass: null, // set a specific class on the modal, default "null"
         width: 'auto', // width (specify unit), default "auto"
         height: 'auto', // height (specify unit), default "auto"
+        headerHtml: null, // html for header (overrides titleHtml), default "null"
         titleHtml: 'My title', // html for title, default "null"
         bodyHtml: 'My Body', // html for body, default "null"
+        footerHtml: null, // html for footer (overrides buttonCancelHtml and buttonConfirmHtml), default "null"
         buttonCancelHtml: 'Cancel', // html for cancel button, default "null"
         buttonConfirmHtml: 'Confirm', // html for confirm button, default "null"
         closeOnCancelButton: false, // close modal after trigger cancel button, default "true"
@@ -169,28 +171,72 @@ After a creating a modal, the basic html structure look like this:
 
 All parameters are optionnal, but to set the base message on the modal you can use `titleHtml` to create the title, `bodyHtml` contain the main message of the modal, and `buttonCancelHtml` & `buttonConfirmHtml` contain the html for each button.
 
-For these 4 fields you can just directly write the text or define tags, or call html from an element like this :
+For these fields you can provide:
+
+- **String**: Plain text or HTML tags
+- **HTMLElement**: A DOM element
+- **Function**: A function that returns an HTMLElement (useful for dynamic content or lazy loading)
 
 ```javascript
 const myModal = createWebcimesModal({
     titleHtml: "My title <span style='color:red'>with red color</span>", // directly put an html tag or attribute like span and style
-    bodyHtml: document.querySelector('#myID').outerHTML, // set html from an HTML element
-    buttonCancelHtml: "Cancel <img src='my-url' alt=''>", // put the img tag
+    bodyHtml: document.querySelector('#myID'), // set HTMLElement directly
+    buttonCancelHtml: () => {
+        const btn = document.createElement('span');
+        btn.textContent = 'Cancel';
+        btn.style.fontWeight = 'bold';
+        return btn;
+    }, // use a function that returns an HTMLElement
     buttonConfirmHtml: 'Confirm', // or just text
 });
 ```
 
-if any of these 4 fields is set to null (the default), it will not appear on the modal
+### Advanced: Full control with headerHtml and footerHtml
+
+For complete customization, you can use `headerHtml` and `footerHtml` which override their respective simple options:
+
+- `headerHtml` overrides `titleHtml`
+- `footerHtml` overrides `buttonCancelHtml` and `buttonConfirmHtml`
+
+```javascript
+const myModal = createWebcimesModal({
+    headerHtml: () => {
+        const header = document.createElement('div');
+        header.innerHTML = '<h2>Custom Header</h2><p>Subtitle here</p>';
+        return header;
+    },
+    showCloseButton: true, // Close button will still be added
+    footerHtml: () => {
+        const footer = document.createElement('div');
+        footer.innerHTML = '<button class="webcimes-modal__close">Custom Close</button>';
+        return footer;
+    },
+});
+```
+
+**Note**: Any element with the class `webcimes-modal__close` will automatically close the modal when clicked.
+
+if any of these fields is set to null (the default), it will not appear on the modal
 
 ### Remove specific structure of the modal:
 
-If you want to completely remove `webcimes-modal__header`, `webcimes-modal__body` or `webcimes-modal__footer` you need:
+Modal sections are automatically hidden when all their content properties are empty or disabled:
 
-To remove `webcimes-modal__header`: set `titleHtml` to `null` and `showCloseButton` to `false`
+**To remove `webcimes-modal__header`:** set `headerHtml` to `null`, `titleHtml` to `null` and `showCloseButton` to `false`
 
-To remove `webcimes-modal__body`: set `bodyHtml` to `null`
+**To remove `webcimes-modal__body`:** set `bodyHtml` to `null`
 
-To remove `webcimes-modal__footer`: set `buttonCancelHtml` to `null` and `buttonConfirmHtml` to `null`
+**To remove `webcimes-modal__footer`:** set `footerHtml` to `null`, `buttonCancelHtml` to `null` and `buttonConfirmHtml` to `null`
+
+Example:
+
+```javascript
+const myModal = createWebcimesModal({
+    bodyHtml: 'My message', // Only body will be displayed
+    // header is removed (all null/false)
+    // footer is removed (all null)
+});
+```
 
 ### Scale the modal:
 

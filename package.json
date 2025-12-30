@@ -1,43 +1,43 @@
 {
-  "name": "webcimes-modal",
-  "version": "2.0.2",
-  "description": "Simply create and animate modals. It works with vanilla javascript + html + css.",
-  "main": "./dist/js/webcimes-modal.udm.js",
-  "module": "./dist/js/webcimes-modal.esm.js",
-  "types": "./src/ts/webcimes-modal.d.ts",
-  "scripts": {
-    "build": "webpack --config webpack.config.ts",
-    "watch": "webpack --config webpack.config.ts --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/WebCimes/webcimes-modal.git"
-  },
-  "author": "WebCimes",
-  "license": "MIT",
-  "keywords": [
-    "modal",
-    "multiple modals",
-    "alert",
-    "confirm",
-    "popup",
-    "javascript",
-    "vanilla javascript"
-  ],
-  "bugs": {
-    "url": "https://github.com/WebCimes/webcimes-modal/issues"
-  },
-  "homepage": "https://github.com/WebCimes/webcimes-modal#readme",
-  "devDependencies": {
-    "css-loader": "^6.8.1",
-    "css-minimizer-webpack-plugin": "^5.0.1",
-    "filemanager-webpack-plugin": "^8.0.0",
-    "mini-css-extract-plugin": "^2.7.6",
-    "prettier": "^3.6.2",
-    "ts-loader": "^9.4.4",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
-  }
+    "name": "webcimes-modal",
+    "version": "2.1.0",
+    "description": "Simply create and animate modals. It works with vanilla javascript + html + css.",
+    "main": "./dist/js/webcimes-modal.udm.js",
+    "module": "./dist/js/webcimes-modal.esm.js",
+    "types": "./src/ts/webcimes-modal.d.ts",
+    "scripts": {
+        "build": "webpack --config webpack.config.ts",
+        "watch": "webpack --config webpack.config.ts --watch"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/WebCimes/webcimes-modal.git"
+    },
+    "author": "WebCimes",
+    "license": "MIT",
+    "keywords": [
+        "modal",
+        "multiple modals",
+        "alert",
+        "confirm",
+        "popup",
+        "javascript",
+        "vanilla javascript"
+    ],
+    "bugs": {
+        "url": "https://github.com/WebCimes/webcimes-modal/issues"
+    },
+    "homepage": "https://github.com/WebCimes/webcimes-modal#readme",
+    "devDependencies": {
+        "css-loader": "^6.8.1",
+        "css-minimizer-webpack-plugin": "^5.0.1",
+        "filemanager-webpack-plugin": "^8.0.0",
+        "mini-css-extract-plugin": "^2.7.6",
+        "prettier": "^3.6.2",
+        "ts-loader": "^9.4.4",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.2.2",
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4"
+    }
 }

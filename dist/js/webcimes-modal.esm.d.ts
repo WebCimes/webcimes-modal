@@ -29,14 +29,18 @@ export interface Options {
     width: string;
     /** height (specify unit), default "auto" */
     height: string;
+    /** html for header (overrides titleHtml), default "null" */
+    headerHtml: string | HTMLElement | (() => HTMLElement) | null;
     /** html for title, default "null" */
-    titleHtml: string | null;
+    titleHtml: string | HTMLElement | (() => HTMLElement) | null;
     /** html for body, default "null" */
-    bodyHtml: string | null;
+    bodyHtml: string | HTMLElement | (() => HTMLElement) | null;
+    /** html for footer (overrides buttonCancelHtml and buttonConfirmHtml), default "null" */
+    footerHtml: string | HTMLElement | (() => HTMLElement) | null;
     /** html for cancel button, default "null" */
-    buttonCancelHtml: string | null;
+    buttonCancelHtml: string | HTMLElement | (() => HTMLElement) | null;
     /** html for confirm button, default "null" */
-    buttonConfirmHtml: string | null;
+    buttonConfirmHtml: string | HTMLElement | (() => HTMLElement) | null;
     /** close modal after trigger cancel button, default "true" */
     closeOnCancelButton: boolean;
     /** close modal after trigger confirm button, default "true" */

@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
         footerHtml: null, // html for footer (overrides buttonCancelHtml and buttonConfirmHtml), default "null"
         buttonCancelHtml: 'Cancel', // html for cancel button, default "null"
         buttonConfirmHtml: 'Confirm', // html for confirm button, default "null"
+        buttonCancelClass: ['my-custom-class'], // add extra css classes to cancel button, default "[]"
+        buttonConfirmClass: ['my-custom-class'], // add extra css classes to confirm button, default "[]"
         closeOnCancelButton: true, // close the modal after trigger cancel button, default "true"
         closeOnConfirmButton: true, // close the modal after trigger confirm button, default "true"
         showCloseButton: true, // show the close button, default "true"
@@ -23,8 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
         moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
         moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
         moveFromFooter: true, // if allowMovement is set to "true", ability to move modal from footer, default "true"
-        stickyHeader: true, // keep sticky (visible) the header when scrolling, default "true"
-        stickyFooter: true, // keep sticky (visible) the footer when scrolling, default "true"
         style: null, // add extra style css to the modal, default null
         animationOnShow: 'animDropDown', // "animDropDown" or "animFadeIn" for enter animation, default "animDropDown"
         animationOnDestroy: 'animDropUp', // "animDropUp" or "animFadeOut" for end animation, default "animDropUp"

@@ -103,6 +103,8 @@ document.addEventListener('DOMContentLoaded', function () {
         footerHtml: null, // html for footer (overrides buttonCancelHtml and buttonConfirmHtml), default "null"
         buttonCancelHtml: 'Cancel', // html for cancel button, default "null"
         buttonConfirmHtml: 'Confirm', // html for confirm button, default "null"
+        buttonCancelClass: [], // add extra css classes to cancel button, default "[]"
+        buttonConfirmClass: [], // add extra css classes to confirm button, default "[]"
         closeOnCancelButton: false, // close modal after trigger cancel button, default "true"
         closeOnConfirmButton: true, // close modal after trigger confirm button, default "true"
         showCloseButton: true, // show close button, default "true"
@@ -111,8 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
         moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
         moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
         moveFromFooter: true, // if allowMovement is set to "true", ability to move modal from footer, default "true"
-        stickyHeader: true, // keep header sticky (visible) when scrolling, default "true"
-        stickyFooter: true, // keep footer sticky (visible) when scrolling, default "true"
         style: null, // add extra css style to modal, default null
         animationOnShow: 'animDropDown', // "animDropDown" or "animFadeIn" for show animation, default "animDropDown"
         animationOnDestroy: 'animDropUp', // "animDropUp" or "animFadeOut" for destroy animation, default "animDropUp"
@@ -145,24 +145,33 @@ After a creating a modal, the basic html structure look like this:
 
 ```html
 <div class="webcimes-modal">
+    <button
+        class="webcimes-modal__button webcimes-modal__close-button webcimes-modal__close"
+        aria-label="Close modal"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+            <path
+                d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"
+            />
+        </svg>
+    </button>
     <div class="webcimes-modal__header">
         <div class="webcimes-modal__title">My title</div>
-        <button
-            class="webcimes-modal__button webcimes-modal__header-close webcimes-modal__close"
-        ></button>
     </div>
     <div class="webcimes-modal__body">My body</div>
     <div class="webcimes-modal__footer">
-        <button
-            class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--cancel"
-        >
-            Cancel
-        </button>
-        <button
-            class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--confirm"
-        >
-            Confirm
-        </button>
+        <div class="webcimes-modal__footer-buttons">
+            <button
+                class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--cancel"
+            >
+                Cancel
+            </button>
+            <button
+                class="webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--confirm"
+            >
+                Confirm
+            </button>
+        </div>
     </div>
 </div>
 ```
@@ -205,7 +214,6 @@ const myModal = createWebcimesModal({
         header.innerHTML = '<h2>Custom Header</h2><p>Subtitle here</p>';
         return header;
     },
-    showCloseButton: true, // Close button will still be added
     footerHtml: () => {
         const footer = document.createElement('div');
         footer.innerHTML = '<button class="webcimes-modal__close">Custom Close</button>';
@@ -222,7 +230,7 @@ if any of these fields is set to null (the default), it will not appear on the m
 
 Modal sections are automatically hidden when all their content properties are empty or disabled:
 
-**To remove `webcimes-modal__header`:** set `headerHtml` to `null`, `titleHtml` to `null` and `showCloseButton` to `false`
+**To remove `webcimes-modal__header`:** set `headerHtml` to `null` and `titleHtml` to `null`
 
 **To remove `webcimes-modal__body`:** set `bodyHtml` to `null`
 
@@ -257,6 +265,8 @@ Below are the different options for customize the modal behavior.
 
 ```javascript
 const myModal = createWebcimesModal({
+    buttonCancelClass: ['btn-secondary', 'btn-lg'], // add extra css classes to cancel button, default "[]"
+    buttonConfirmClass: ['btn-danger', 'btn-lg'], // add extra css classes to confirm button, default "[]"
     closeOnCancelButton: false, // close modal after triggering cancel button, default "true"
     closeOnConfirmButton: false, // close modal after triggering confirm button, default "true"
     showCloseButton: true, // show close button, default "true"
@@ -265,8 +275,6 @@ const myModal = createWebcimesModal({
     moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
     moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
     moveFromFooter: true, // if allowMovement is set to "true", ability to move modal from footer, default "true"
-    stickyHeader: true, // keep header sticky (visible) when scrolling, default "true"
-    stickyFooter: true, // keep footer sticky (visible) when scrolling, default "true"
 });
 ```
 
@@ -399,7 +407,11 @@ You can style modal with the following field applying to the class of `.webcimes
     --modal-background: #fff;
     --modal-border-color: #ddd;
     --modal-box-shadow: 1px 1px 3px 0px #444;
+    --modal-header-padding: 20px 40px;
+    --modal-body-padding: 20px 40px;
+    --modal-footer-padding: 20px 40px;
     --modal-title-font-size: 24px;
+    --modal-title-font-weight: 600;
     --modal-button-cancel-background: rgba(102, 102, 102, 1);
     --modal-button-cancel-background-hover: rgba(102, 102, 102, 0.7);
     --modal-button-cancel-color: #fff;

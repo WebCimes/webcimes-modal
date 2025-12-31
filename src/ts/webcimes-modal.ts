@@ -45,6 +45,10 @@ export interface Options {
     buttonCancelHtml: string | HTMLElement | (() => HTMLElement) | null;
     /** html for confirm button, default "null" */
     buttonConfirmHtml: string | HTMLElement | (() => HTMLElement) | null;
+    /** add extra css classes to cancel button, default "[]" */
+    buttonCancelClass: string[];
+    /** add extra css classes to confirm button, default "[]" */
+    buttonConfirmClass: string[];
     /** close modal after trigger cancel button, default "true" */
     closeOnCancelButton: boolean;
     /** close modal after trigger confirm button, default "true" */
@@ -61,10 +65,6 @@ export interface Options {
     moveFromBody: boolean;
     /** if allowMovement is set to "true", ability to move modal from footer, default "true" */
     moveFromFooter: boolean;
-    /** keep header sticky (visible) when scrolling, default "true" */
-    stickyHeader: boolean;
-    /** keep footer sticky (visible) when scrolling, default "true" */
-    stickyFooter: boolean;
     /** add extra css style to modal, default null */
     style: string | null;
     /** "animDropDown" or "animFadeIn" for show animation, default "animDropDown" */
@@ -253,7 +253,7 @@ class WebcimesModalImpl implements WebcimesModal {
      */
     private buildHeader(): HTMLElement | null {
         // Check if header should be created
-        if (!this.options.headerHtml && !this.options.titleHtml && !this.options.showCloseButton) {
+        if (!this.options.headerHtml && !this.options.titleHtml) {
             return null;
         }
 
@@ -261,9 +261,6 @@ class WebcimesModalImpl implements WebcimesModal {
         const header = document.createElement('div');
         header.className = 'webcimes-modal__header';
 
-        if (this.options.stickyHeader) {
-            header.classList.add('webcimes-modal__header--is-sticky');
-        }
         if (this.options.moveFromHeader) {
             header.classList.add('webcimes-modal__header--is-movable');
         }
@@ -271,16 +268,6 @@ class WebcimesModalImpl implements WebcimesModal {
         // If headerHtml is provided, use it directly (full control)
         if (this.options.headerHtml) {
             this.setElementContent(header, this.options.headerHtml);
-
-            // Add close button if requested
-            if (this.options.showCloseButton) {
-                const closeButton = document.createElement('button');
-                closeButton.className =
-                    'webcimes-modal__button webcimes-modal__header-close webcimes-modal__close';
-                closeButton.setAttribute('aria-label', 'Close modal');
-                header.appendChild(closeButton);
-            }
-
             return header;
         }
 
@@ -290,14 +277,6 @@ class WebcimesModalImpl implements WebcimesModal {
             title.className = 'webcimes-modal__title';
             this.setElementContent(title, this.options.titleHtml);
             header.appendChild(title);
-        }
-
-        if (this.options.showCloseButton) {
-            const closeButton = document.createElement('button');
-            closeButton.className =
-                'webcimes-modal__button webcimes-modal__header-close webcimes-modal__close';
-            closeButton.setAttribute('aria-label', 'Close modal');
-            header.appendChild(closeButton);
         }
 
         return header;
@@ -340,9 +319,6 @@ class WebcimesModalImpl implements WebcimesModal {
         const footer = document.createElement('div');
         footer.className = 'webcimes-modal__footer';
 
-        if (this.options.stickyFooter) {
-            footer.classList.add('webcimes-modal__footer--is-sticky');
-        }
         if (this.options.moveFromFooter) {
             footer.classList.add('webcimes-modal__footer--is-movable');
         }
@@ -353,30 +329,54 @@ class WebcimesModalImpl implements WebcimesModal {
             return footer;
         }
 
-        // Otherwise, create buttons
+        // Otherwise, create buttons wrapper
+        const buttonsWrapper = document.createElement('div');
+        buttonsWrapper.className = 'webcimes-modal__footer-buttons';
+
         if (this.options.buttonCancelHtml) {
             const cancelButton = document.createElement('button');
             cancelButton.className =
                 'webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--cancel';
+            if (this.options.buttonCancelClass.length > 0) {
+                cancelButton.classList.add(...this.options.buttonCancelClass);
+            }
             if (this.options.closeOnCancelButton) {
                 cancelButton.classList.add('webcimes-modal__close');
             }
             this.setElementContent(cancelButton, this.options.buttonCancelHtml);
-            footer.appendChild(cancelButton);
+            buttonsWrapper.appendChild(cancelButton);
         }
 
         if (this.options.buttonConfirmHtml) {
             const confirmButton = document.createElement('button');
             confirmButton.className =
                 'webcimes-modal__button webcimes-modal__footer-button webcimes-modal__footer-button--confirm';
+            if (this.options.buttonConfirmClass.length > 0) {
+                confirmButton.classList.add(...this.options.buttonConfirmClass);
+            }
             if (this.options.closeOnConfirmButton) {
                 confirmButton.classList.add('webcimes-modal__close');
             }
             this.setElementContent(confirmButton, this.options.buttonConfirmHtml);
-            footer.appendChild(confirmButton);
+            buttonsWrapper.appendChild(confirmButton);
         }
 
+        footer.appendChild(buttonsWrapper);
+
         return footer;
+    }
+
+    /**
+     * Build close button
+     */
+    private buildCloseButton(): HTMLElement {
+        const closeButton = document.createElement('button');
+        closeButton.className =
+            'webcimes-modal__button webcimes-modal__close-button webcimes-modal__close';
+        closeButton.setAttribute('aria-label', 'Close modal');
+        closeButton.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"/></svg>';
+        return closeButton;
     }
 
     /**
@@ -412,6 +412,11 @@ class WebcimesModalImpl implements WebcimesModal {
             modal.appendChild(footer);
         }
 
+        // Add close button at modal level (always present and independent)
+        if (this.options.showCloseButton) {
+            modal.appendChild(this.buildCloseButton());
+        }
+
         return modal;
     }
 
@@ -431,6 +436,8 @@ class WebcimesModalImpl implements WebcimesModal {
             footerHtml: null,
             buttonCancelHtml: null,
             buttonConfirmHtml: null,
+            buttonCancelClass: [],
+            buttonConfirmClass: [],
             closeOnCancelButton: true,
             closeOnConfirmButton: true,
             showCloseButton: true,
@@ -439,8 +446,6 @@ class WebcimesModalImpl implements WebcimesModal {
             moveFromHeader: true,
             moveFromBody: false,
             moveFromFooter: true,
-            stickyHeader: true,
-            stickyFooter: true,
             style: null,
             animationOnShow: 'animDropDown',
             animationOnDestroy: 'animDropUp',
@@ -514,7 +519,6 @@ class WebcimesModalImpl implements WebcimesModal {
         }, this.options.animationDuration);
 
         // Width of modal
-        this.modal.style.setProperty('max-width', '90%');
         if (this.options.width != 'auto' && this.options.width) {
             this.modal.style.setProperty('width', this.options.width);
         } else {
@@ -523,7 +527,6 @@ class WebcimesModalImpl implements WebcimesModal {
         }
 
         // Height of modal
-        this.modal.style.setProperty('max-height', '90%');
         if (this.options.height != 'auto' && this.options.height) {
             this.modal.style.setProperty('height', this.options.height);
         } else {

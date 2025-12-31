@@ -41,6 +41,10 @@ export interface Options {
     buttonCancelHtml: string | HTMLElement | (() => HTMLElement) | null;
     /** html for confirm button, default "null" */
     buttonConfirmHtml: string | HTMLElement | (() => HTMLElement) | null;
+    /** add extra css classes to cancel button, default "[]" */
+    buttonCancelClass: string[];
+    /** add extra css classes to confirm button, default "[]" */
+    buttonConfirmClass: string[];
     /** close modal after trigger cancel button, default "true" */
     closeOnCancelButton: boolean;
     /** close modal after trigger confirm button, default "true" */
@@ -57,10 +61,6 @@ export interface Options {
     moveFromBody: boolean;
     /** if allowMovement is set to "true", ability to move modal from footer, default "true" */
     moveFromFooter: boolean;
-    /** keep header sticky (visible) when scrolling, default "true" */
-    stickyHeader: boolean;
-    /** keep footer sticky (visible) when scrolling, default "true" */
-    stickyFooter: boolean;
     /** add extra css style to modal, default null */
     style: string | null;
     /** "animDropDown" or "animFadeIn" for show animation, default "animDropDown" */

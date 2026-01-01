@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
         headerHtml: () => {
             const header = document.createElement('div');
             header.innerHTML =
-                '<h2 style="margin: 0; color: #333;">Custom Header</h2><p style="margin: 5px 0 0; font-size: 14px; color: #666;">With dynamic content</p>';
+                '<h2 style="margin: 0; color: #333;">Custom Header</h2><p style="margin: 0.3125rem 0 0; font-size: 0.875rem; color: #666;">With dynamic content</p>';
             return header;
         },
         bodyHtml: () => {
@@ -88,13 +88,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const cancelBtn = document.createElement('button');
             cancelBtn.textContent = 'Custom Cancel';
             cancelBtn.className = 'webcimes-modal__close';
-            cancelBtn.style.padding = '8px 16px';
+            cancelBtn.style.padding = '0.5rem 1rem';
             cancelBtn.style.cursor = 'pointer';
 
             const confirmBtn = document.createElement('button');
             confirmBtn.textContent = 'Custom Confirm';
             confirmBtn.className = 'webcimes-modal__close';
-            confirmBtn.style.padding = '8px 16px';
+            confirmBtn.style.padding = '0.5rem 1rem';
             confirmBtn.style.cursor = 'pointer';
             confirmBtn.style.background = '#007bff';
             confirmBtn.style.color = 'white';

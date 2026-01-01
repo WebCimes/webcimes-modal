@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         headerHtml: () => {
             const header = document.createElement('div');
             header.innerHTML =
-                '<h2>Custom Header</h2><p style="font-size: 12px;">With subtitle</p>';
+                '<h2>Custom Header</h2><p style="font-size: 0.75rem;">With subtitle</p>';
             return header;
         },
         bodyHtml: 'Body with custom header and footer',
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const footer = document.createElement('div');
             footer.style.textAlign = 'center';
             footer.innerHTML =
-                '<button class="webcimes-modal__close" style="padding: 10px 20px;">Close Me</button>';
+                '<button class="webcimes-modal__close" style="padding: 0.625rem 1.25rem;">Close Me</button>';
             return footer;
         },
         showCloseButton: true, // Close button still appears

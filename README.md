@@ -407,17 +407,17 @@ You can style modal with the following field applying to the class of `.webcimes
     --modal-background: #fff;
     --modal-border-color: #ddd;
     --modal-box-shadow: 1px 1px 3px 0px #444;
-    --modal-header-padding: 20px 40px;
-    --modal-body-padding: 20px 40px;
-    --modal-footer-padding: 20px 40px;
-    --modal-title-font-size: 24px;
+    --modal-header-padding: 1.25rem 2.5rem;
+    --modal-body-padding: 1.25rem 2.5rem;
+    --modal-footer-padding: 1.25rem 2.5rem;
+    --modal-title-font-size: 1.5rem;
     --modal-title-font-weight: 600;
-    --modal-button-cancel-background: rgba(102, 102, 102, 1);
-    --modal-button-cancel-background-hover: rgba(102, 102, 102, 0.7);
-    --modal-button-cancel-color: #fff;
-    --modal-button-cancel-color-hover: #fff;
-    --modal-button-confirm-background: rgba(0, 0, 0, 1);
-    --modal-button-confirm-background-hover: rgba(0, 0, 0, 0.7);
+    --modal-button-cancel-background: #e5e5e5;
+    --modal-button-cancel-background-hover: #d0d0d0;
+    --modal-button-cancel-color: #333;
+    --modal-button-cancel-color-hover: #000;
+    --modal-button-confirm-background: #1e88e5;
+    --modal-button-confirm-background-hover: #1565c0;
     --modal-button-confirm-color: #fff;
     --modal-button-confirm-color-hover: #fff;
 }

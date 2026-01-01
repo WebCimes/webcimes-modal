@@ -410,7 +410,7 @@ You can style modal with the following field applying to the class of `.webcimes
     --modal-header-padding: 1.25rem 2.5rem;
     --modal-body-padding: 1.25rem 2.5rem;
     --modal-footer-padding: 1.25rem 2.5rem;
-    --modal-title-font-size: 1.5rem;
+    --modal-title-font-size: 1.25rem;
     --modal-title-font-weight: 600;
     --modal-button-cancel-background: #e5e5e5;
     --modal-button-cancel-background-hover: #d0d0d0;

@@ -25,6 +25,10 @@ export interface Options {
     setId: string | null;
     /** set a specific class on the modal, default "null" */
     setClass: string | null;
+    /** Accessible name for a dialog without a visible title, or override for its header. */
+    ariaLabel?: string;
+    /** Close the topmost dialog with Escape when allowCloseOutside is true. Defaults to true. */
+    closeOnEscape?: boolean;
     /** width (specify unit), default "auto" */
     width: string;
     /** height (specify unit), default "auto" */

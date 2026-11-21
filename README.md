@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
         height: 'auto', // height (specify unit), default "auto"
         headerHtml: null, // html for header (overrides titleHtml), default "null"
         titleHtml: 'My title', // html for title, default "null"
+        ariaLabel: undefined, // optional accessible name that overrides the visible title
         bodyHtml: 'My Body', // html for body, default "null"
         footerHtml: null, // html for footer (overrides buttonCancelHtml and buttonConfirmHtml), default "null"
         buttonCancelHtml: 'Cancel', // html for cancel button, default "null"
@@ -108,7 +109,8 @@ document.addEventListener('DOMContentLoaded', function () {
         closeOnCancelButton: false, // close modal after trigger cancel button, default "true"
         closeOnConfirmButton: true, // close modal after trigger confirm button, default "true"
         showCloseButton: true, // show close button, default "true"
-        allowCloseOutside: false, // allow the modal to close when clicked outside, default "true"
+        allowCloseOutside: false, // allow dismissal by clicking outside, default true
+        closeOnEscape: true, // allow dismissal with Escape when allowCloseOutside is true, default true
         allowMovement: true, // ability to move modal, default "true"
         moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
         moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
@@ -144,19 +146,9 @@ document.addEventListener('DOMContentLoaded', function () {
 After a creating a modal, the basic html structure look like this:
 
 ```html
-<div class="webcimes-modal">
-    <button
-        class="webcimes-modal__button webcimes-modal__close-button webcimes-modal__close"
-        aria-label="Close modal"
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-            <path
-                d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"
-            />
-        </svg>
-    </button>
+<div class="webcimes-modal" role="dialog" aria-modal="true" aria-labelledby="webcimes-modal-title-1" tabindex="-1">
     <div class="webcimes-modal__header">
-        <div class="webcimes-modal__title">My title</div>
+        <div class="webcimes-modal__title" id="webcimes-modal-title-1">My title</div>
     </div>
     <div class="webcimes-modal__body">My body</div>
     <div class="webcimes-modal__footer">
@@ -173,6 +165,16 @@ After a creating a modal, the basic html structure look like this:
             </button>
         </div>
     </div>
+    <button
+        class="webcimes-modal__button webcimes-modal__close-button webcimes-modal__close"
+        aria-label="Close modal"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+            <path
+                d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"
+            />
+        </svg>
+    </button>
 </div>
 ```
 
@@ -270,13 +272,40 @@ const myModal = createWebcimesModal({
     closeOnCancelButton: false, // close modal after triggering cancel button, default "true"
     closeOnConfirmButton: false, // close modal after triggering confirm button, default "true"
     showCloseButton: true, // show close button, default "true"
-    allowCloseOutside: false, // allows the modal to close when clicked outside, default "true"
+    allowCloseOutside: false, // allow dismissal by clicking outside, default true
+    closeOnEscape: true, // allow dismissal with Escape when allowCloseOutside is true, default true
     allowMovement: true, // ability to move modal, default "true"
     moveFromHeader: true, // if allowMovement is set to "true", ability to move modal from header, default "true"
     moveFromBody: false, // if allowMovement is set to "true", ability to move modal from body, default "false"
     moveFromFooter: true, // if allowMovement is set to "true", ability to move modal from footer, default "true"
 });
 ```
+
+### Dismissal and required actions
+
+`allowCloseOutside: false` blocks both outside clicks and Escape, even when `closeOnEscape` is `true`. To keep outside clicks enabled while disabling Escape, set `closeOnEscape: false`.
+
+Use `showCloseButton: false` to hide the built-in close button. The footer buttons still follow their own `closeOnCancelButton` and `closeOnConfirmButton` settings. A custom element marked with `webcimes-modal__close` still dismisses the modal.
+
+For a modal that stays open until the user completes a required action, provide a clear action and call `destroy()` when it is complete.
+
+```javascript
+const modal = createWebcimesModal({
+    titleHtml: 'Acknowledge the notice',
+    bodyHtml: 'Read this notice before continuing.',
+    allowCloseOutside: false,
+    showCloseButton: false,
+    buttonConfirmHtml: 'Acknowledge',
+    closeOnConfirmButton: false,
+    onConfirmButton: () => modal.destroy(),
+});
+```
+
+### Keyboard and accessible name
+
+Use `titleHtml` or a heading inside `headerHtml` to give the dialog an accessible name. Use `ariaLabel` for a dialog without a visible title or to override the name derived from the header.
+
+On open, the library focuses a focusable element with `autofocus`, including a heading with `tabindex="-1"`. Otherwise, it focuses the first keyboard-focusable element or the dialog itself. Tab and Shift+Tab stay in the topmost Webcimes dialog. Escape dismisses that dialog when enabled. When the dialog closes, focus returns to its opener if it is still available.
 
 ### Add extra style to the modal:
 
@@ -376,6 +405,8 @@ myModal.modal.addEventListener("afterDestroy", () => {
 To destroy the modal, you have several ways:
 
 - You can use basic close button with `showCloseButton` property set to `true`
+
+- Click outside when `allowCloseOutside` is enabled, or press Escape when both `allowCloseOutside` and `closeOnEscape` are enabled.
 
 - Use `webcimes-modal__footer-button--cancel` or `webcimes-modal__footer-button--confirm` button with `closeOnCancelButton` or `closeOnConfirmButton` property set to `true`
 

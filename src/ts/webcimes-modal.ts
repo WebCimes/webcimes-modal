@@ -29,6 +29,10 @@ export interface Options {
     setId: string | null;
     /** set a specific class on the modal, default "null" */
     setClass: string | null;
+    /** Accessible name for a dialog without a visible title, or override for its header. */
+    ariaLabel?: string;
+    /** Close the topmost dialog with Escape when allowCloseOutside is true. Defaults to true. */
+    closeOnEscape?: boolean;
     /** width (specify unit), default "auto" */
     width: string;
     /** height (specify unit), default "auto" */
@@ -100,6 +104,9 @@ export interface WebcimesModal {
     destroy(): void;
 }
 
+let nextTitleId = 0;
+const modalInstances = new WeakMap<HTMLElement, WebcimesModalImpl>();
+
 /**
  * WebcimesModal implementation class
  */
@@ -112,6 +119,127 @@ class WebcimesModalImpl implements WebcimesModal {
 
     /** Options of the current modal */
     private options: Options;
+
+    private opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    private openerModal = this.opener?.closest<HTMLElement>('.webcimes-modal');
+
+    private returnFocusTarget(): HTMLElement | null {
+        if (this.opener?.isConnected && !this.openerModal?.hasAttribute('data-destroying')) {
+            return this.opener;
+        }
+
+        return this.openerModal
+            ? (modalInstances.get(this.openerModal)?.returnFocusTarget() ?? null)
+            : null;
+    }
+
+    private topModal(): HTMLElement | null {
+        const modals = this.modals.querySelectorAll<HTMLElement>(
+            '.webcimes-modal:not([data-destroying])',
+        );
+        return modals[modals.length - 1] ?? null;
+    }
+
+    private sameRadioGroup(first: Element | null, second: HTMLElement): boolean {
+        return (
+            first instanceof HTMLInputElement &&
+            second instanceof HTMLInputElement &&
+            first.type === 'radio' &&
+            second.type === 'radio' &&
+            first.name !== '' &&
+            first.name === second.name &&
+            first.form === second.form
+        );
+    }
+
+    private focusableElements(backwards = false): HTMLElement[] {
+        const candidates = this.modal.querySelectorAll<HTMLElement>(
+            'a[href], button, input, select, textarea, iframe, summary, [contenteditable="true"], [tabindex]',
+        );
+        const focusable = Array.from(candidates).filter(
+            (element) =>
+                (element.tabIndex >= 0 ||
+                    (element.isContentEditable && !element.hasAttribute('tabindex'))) &&
+                !element.matches(':disabled, [type="hidden"]') &&
+                !element.closest('[inert]') &&
+                element.getClientRects().length > 0 &&
+                getComputedStyle(element).visibility === 'visible',
+        );
+        return focusable
+            .filter((element) => {
+                if (
+                    !(element instanceof HTMLInputElement) ||
+                    element.type !== 'radio' ||
+                    !element.name
+                ) {
+                    return true;
+                }
+                const group = focusable.filter((candidate): candidate is HTMLInputElement =>
+                    this.sameRadioGroup(element, candidate),
+                );
+                return (
+                    element ===
+                    (group.find((radio) => radio.checked) ??
+                        (backwards ? group[group.length - 1] : group[0]))
+                );
+            })
+            .sort((a, b) => this.tabOrder(a) - this.tabOrder(b));
+    }
+
+    private tabOrder(element: HTMLElement): number {
+        return element.tabIndex > 0 ? element.tabIndex : Infinity;
+    }
+
+    private focusInitialElement(): void {
+        for (const element of this.modal.querySelectorAll<HTMLElement>('[autofocus]')) {
+            element.focus({ preventScroll: true });
+            if (document.activeElement === element) {
+                return;
+            }
+        }
+
+        const target = this.focusableElements()[0] ?? this.modal;
+        target.focus({ preventScroll: true });
+        if (!this.modal.contains(document.activeElement)) {
+            this.modal.focus({ preventScroll: true });
+        }
+    }
+
+    private eventKeyboard = (event: KeyboardEvent): void => {
+        if (
+            event.defaultPrevented ||
+            event.isComposing ||
+            this.topModal() !== this.modal ||
+            (CSS.supports('selector(:modal)') && document.querySelector('dialog:modal'))
+        ) {
+            return;
+        }
+
+        if (
+            event.key === 'Escape' &&
+            !event.repeat &&
+            this.options.allowCloseOutside &&
+            this.options.closeOnEscape !== false
+        ) {
+            event.preventDefault();
+            this.destroy();
+        } else if (event.key === 'Tab') {
+            const elements = this.focusableElements(event.shiftKey);
+            const active = document.activeElement;
+            const current = elements.find(
+                (element) => element === active || this.sameRadioGroup(active, element),
+            );
+            const boundary = event.shiftKey ? elements[0] : elements[elements.length - 1];
+
+            if (!current || current === boundary) {
+                event.preventDefault();
+                const target =
+                    (event.shiftKey ? elements[elements.length - 1] : elements[0]) ?? this.modal;
+                target.focus();
+            }
+        }
+    };
 
     private eventCancelButton: () => void = () => {
         // Callback on cancel button
@@ -389,6 +517,7 @@ class WebcimesModalImpl implements WebcimesModal {
         // ARIA attributes for accessibility
         modal.setAttribute('role', 'dialog');
         modal.setAttribute('aria-modal', 'true');
+        modal.tabIndex = -1;
 
         if (this.options.setClass) {
             modal.classList.add(this.options.setClass);
@@ -400,6 +529,17 @@ class WebcimesModalImpl implements WebcimesModal {
         const header = this.buildHeader();
         if (header) {
             modal.appendChild(header);
+        }
+
+        const title =
+            header?.querySelector<HTMLElement>(
+                '.webcimes-modal__title, h1, h2, h3, h4, h5, h6, [role="heading"]',
+            ) ?? header;
+        if (this.options.ariaLabel?.trim()) {
+            modal.setAttribute('aria-label', this.options.ariaLabel);
+        } else if (title?.textContent?.trim()) {
+            title.id ||= `webcimes-modal-title-${++nextTitleId}`;
+            modal.setAttribute('aria-labelledby', title.id);
         }
 
         const body = this.buildBody();
@@ -494,6 +634,7 @@ class WebcimesModalImpl implements WebcimesModal {
 
         // Create modal with content
         this.modal = this.buildModal();
+        modalInstances.set(this.modal, this);
         this.modals.appendChild(this.modal);
 
         // Callback before show modal (set a timeout of zero, to wait for some dom to load)
@@ -501,6 +642,9 @@ class WebcimesModalImpl implements WebcimesModal {
             this.modal.dispatchEvent(new CustomEvent('beforeShow'));
             if (typeof this.options.beforeShow === 'function') {
                 this.options.beforeShow();
+            }
+            if (this.topModal() === this.modal && !this.modal.contains(document.activeElement)) {
+                this.focusInitialElement();
             }
         }, 0);
 
@@ -615,6 +759,7 @@ class WebcimesModalImpl implements WebcimesModal {
 
         // When resizing window, reset modal position to center
         window.addEventListener('resize', this.eventResize);
+        document.addEventListener('keydown', this.eventKeyboard);
     }
 
     /**
@@ -623,6 +768,9 @@ class WebcimesModalImpl implements WebcimesModal {
     public destroy() {
         // If modal is not already destroying
         if (!this.modal.getAttribute('data-destroying')) {
+            const restoreFocus = this.topModal() === this.modal;
+            document.removeEventListener('keydown', this.eventKeyboard);
+
             // Callback before destroy modal
             this.modal.dispatchEvent(new CustomEvent('beforeDestroy'));
             if (typeof this.options.beforeDestroy === 'function') {
@@ -636,6 +784,7 @@ class WebcimesModalImpl implements WebcimesModal {
 
             // Close modal
             this.modal.setAttribute('data-destroying', '1');
+            const remainingModal = this.topModal();
             this.modal.classList.add(this.options.animationOnDestroy);
 
             // Destroy all events from modal and remove modals or modal after animation duration
@@ -695,6 +844,15 @@ class WebcimesModalImpl implements WebcimesModal {
                         ? this.modal
                         : this.modals
                     ).remove();
+                }
+
+                if (restoreFocus && this.topModal() === remainingModal) {
+                    const target = this.returnFocusTarget();
+                    if (target && (!remainingModal || remainingModal.contains(target))) {
+                        target.focus({ preventScroll: true });
+                    } else if (remainingModal && !remainingModal.contains(document.activeElement)) {
+                        remainingModal.focus({ preventScroll: true });
+                    }
                 }
 
                 // Callback after destroy modal

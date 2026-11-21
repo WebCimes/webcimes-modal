@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Modal keyboard test</title>
+        <link rel="stylesheet" href="../dist/css/webcimes-modal.css" />
+    </head>
+    <body>
+        <button id="open">Open planning</button>
+        <button id="open-locked">Open locked modal</button>
+        <button id="open-focus-title">Open modal with title focus</button>
+        <dialog id="native" aria-label="Native modal"><button>Okay</button></dialog>
+        <script type="module">
+            import { createWebcimesModal } from '../dist/js/webcimes-modal.esm.js';
+
+            document.querySelector('#open-focus-title').addEventListener('click', () => {
+                createWebcimesModal({
+                    headerHtml: '<h2 id="focus-title" tabindex="-1" autofocus>Read first</h2>',
+                    bodyHtml: '<button class="webcimes-modal__close">Continue</button>',
+                    showCloseButton: false,
+                    animationDuration: 0,
+                });
+            });
+
+            document.querySelector('#open-locked').addEventListener('click', () => {
+                const locked = createWebcimesModal({
+                    ariaLabel: 'Locked modal',
+                    bodyHtml: '<button id="finish">Finish</button>',
+                    allowCloseOutside: false,
+                    showCloseButton: false,
+                    closeOnEscape: true,
+                    animationDuration: 0,
+                });
+                locked.modal
+                    .querySelector('#finish')
+                    .addEventListener('click', () => locked.destroy());
+            });
+
+            document.querySelector('#open').addEventListener('click', () => {
+                const planning = createWebcimesModal({
+                    headerHtml: '<h2>Planning</h2>',
+                    bodyHtml: `
+                        <input aria-label="Year" autofocus>
+                        <button id="native-button">Open native</button>
+                        <button id="details">Open details</button>
+                        <label><input type="radio" name="extras">First extra</label>
+                        <label><input type="radio" name="extras">Last extra</label>
+                        <button id="after-extras">After extras</button>
+                        <label><input type="radio" name="mode" checked>Weekly</label>
+                        <label><input type="radio" name="mode">Monthly</label>`,
+                    showCloseButton: false,
+                    animationDuration: 0,
+                });
+
+                planning.modal.querySelector('#native-button').addEventListener('click', () => {
+                    document.querySelector('#native').showModal();
+                });
+                planning.modal.querySelector('#details').addEventListener('click', () => {
+                    const details = createWebcimesModal({
+                        ariaLabel: 'Details',
+                        bodyHtml: '<button id="remove-planning">Close parent</button>',
+                        allowCloseOutside: false,
+                        animationDuration: 0,
+                    });
+                    details.modal
+                        .querySelector('#remove-planning')
+                        .addEventListener('click', () => {
+                            planning.destroy();
+                        });
+                });
+            });
+        </script>
+    </body>
+</html>

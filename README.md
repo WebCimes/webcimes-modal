@@ -457,3 +457,15 @@ You can style modal with the following field applying to the class of `.webcimes
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Local development
+
+Use Node.js 20.19+ on the 20.x line, or Node.js 22.12 or later.
+
+- Run `npm install` and `npm run dev`.
+- Open `/demo/demo_esm.html` or `/test/keyboard.html` at the URL printed by Vite. Both pages load the TypeScript and CSS sources and update when you save.
+- Run `npm run build` to generate the ESM and UMD bundles, CSS, declarations and source maps. Then open `/demo/demo_udm.html` to test the generated UMD bundle.
+- Run `npm run watch` to rebuild the distribution files when a source file changes.
+- Run `npm run build` before committing changes that affect the generated files or publishing the package. The development server serves source files and leaves `dist/` unchanged.
+
+Run `make help` to list the available commands. After setting a new version, run `make pack` to build and preview the package, review and commit the changes, then run `make push` and `make publish`. Push sends `main` to GitHub. Publish rebuilds the package and publishes it to npm.

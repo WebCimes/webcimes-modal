@@ -12,11 +12,6 @@
         "esModuleInterop": true,
         "moduleResolution": "node",
     },
-    "ts-node": {
-        "compilerOptions": {
-            "module": "CommonJS"
-        }
-    },
     "files": [
         "src/ts/webcimes-modal.ts",
     ]

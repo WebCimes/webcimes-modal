@@ -102,4 +102,4 @@ export interface WebcimesModal {
  * Factory function to create a WebcimesModal instance with proper typing
  */
 export declare function createWebcimesModal(options: Partial<Options>): WebcimesModal;
-//# sourceMappingURL=webcimes-modal.d.ts.map
+//# sourceMappingURL=webcimes-modal.udm.d.ts.map

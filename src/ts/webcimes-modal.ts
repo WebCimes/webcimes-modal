@@ -120,6 +120,7 @@ class WebcimesModalImpl implements WebcimesModal {
     /** Options of the current modal */
     private options: Options;
 
+    // Capture the opener before inserting the dialog or moving focus into it.
     private opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
     private openerModal = this.opener?.closest<HTMLElement>('.webcimes-modal');
@@ -129,12 +130,14 @@ class WebcimesModalImpl implements WebcimesModal {
             return this.opener;
         }
 
+        // If the parent closed first, follow its opener chain back to a surviving trigger.
         return this.openerModal
             ? (modalInstances.get(this.openerModal)?.returnFocusTarget() ?? null)
             : null;
     }
 
     private topModal(): HTMLElement | null {
+        // DOM order follows the visual stack. Closing dialogs stay in the DOM during animation.
         const modals = this.modals.querySelectorAll<HTMLElement>(
             '.webcimes-modal:not([data-destroying])',
         );
@@ -166,6 +169,7 @@ class WebcimesModalImpl implements WebcimesModal {
                 element.getClientRects().length > 0 &&
                 getComputedStyle(element).visibility === 'visible',
         );
+        // Treat each radio group as one Tab stop. Prefer the checked radio or the entry edge.
         return focusable
             .filter((element) => {
                 if (
@@ -188,10 +192,12 @@ class WebcimesModalImpl implements WebcimesModal {
     }
 
     private tabOrder(element: HTMLElement): number {
+        // Positive tabindex values come first. The stable sort keeps DOM order for ties.
         return element.tabIndex > 0 ? element.tabIndex : Infinity;
     }
 
     private focusInitialElement(): void {
+        // Autofocus can target a heading with tabindex="-1" outside the normal Tab order.
         for (const element of this.modal.querySelectorAll<HTMLElement>('[autofocus]')) {
             element.focus({ preventScroll: true });
             if (document.activeElement === element) {
@@ -207,6 +213,7 @@ class WebcimesModalImpl implements WebcimesModal {
     }
 
     private eventKeyboard = (event: KeyboardEvent): void => {
+        // Let controls handle their own keys and let a native modal dialog manage its own focus.
         if (
             event.defaultPrevented ||
             event.isComposing ||
@@ -216,6 +223,7 @@ class WebcimesModalImpl implements WebcimesModal {
             return;
         }
 
+        // Blocking outside dismissal also blocks Escape, even when closeOnEscape is true.
         if (
             event.key === 'Escape' &&
             !event.repeat &&
@@ -232,6 +240,7 @@ class WebcimesModalImpl implements WebcimesModal {
             );
             const boundary = event.shiftKey ? elements[0] : elements[elements.length - 1];
 
+            // Let the browser handle ordinary Tab moves and wrap only at the dialog boundary.
             if (!current || current === boundary) {
                 event.preventDefault();
                 const target =
@@ -531,6 +540,7 @@ class WebcimesModalImpl implements WebcimesModal {
             modal.appendChild(header);
         }
 
+        // Prefer an explicit label. Otherwise reference the visible title or custom header.
         const title =
             header?.querySelector<HTMLElement>(
                 '.webcimes-modal__title, h1, h2, h3, h4, h5, h6, [role="heading"]',
@@ -643,6 +653,7 @@ class WebcimesModalImpl implements WebcimesModal {
             if (typeof this.options.beforeShow === 'function') {
                 this.options.beforeShow();
             }
+            // Wait for beforeShow to reveal the content and respect focus set by the caller.
             if (this.topModal() === this.modal && !this.modal.contains(document.activeElement)) {
                 this.focusInitialElement();
             }
@@ -846,6 +857,7 @@ class WebcimesModalImpl implements WebcimesModal {
                     ).remove();
                 }
 
+                // Restore focus only if the active dialog has not changed during the exit animation.
                 if (restoreFocus && this.topModal() === remainingModal) {
                     const target = this.returnFocusTarget();
                     if (target && (!remainingModal || remainingModal.contains(target))) {

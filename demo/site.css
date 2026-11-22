@@ -209,3 +209,27 @@ button:focus-visible {
         grid-template-columns: 1fr;
     }
 }
+
+.related-projects {
+    padding-block: 1.4rem 2.5rem;
+    border-top: 1px solid var(--border, #d8e0ef);
+}
+
+.related-projects h2 {
+    margin: 0 0 0.65rem;
+    font-size: 1rem;
+}
+
+.related-projects ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1.25rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.related-projects a {
+    color: var(--accent);
+    text-underline-offset: 0.2em;
+}

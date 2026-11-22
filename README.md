@@ -460,6 +460,14 @@ You can style modal with the following field applying to the class of `.webcimes
 }
 ```
 
+## Other WebCimes projects
+
+- [WebCimes Cookies](https://github.com/WebCimes/webcimes-cookies) — Cookie consent
+- [WebCimes Select](https://github.com/WebCimes/webcimes-select) — Searchable select fields
+- [WebCimes Tooltip](https://github.com/WebCimes/webcimes-tooltip) — Tooltips and popovers
+- [Laravel MediaForge](https://github.com/WebCimes/laravel-mediaforge) — File and image processing
+- [WebCimes Dark Theme](https://github.com/WebCimes/webcimes-dark-theme) — VS Code color theme
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)

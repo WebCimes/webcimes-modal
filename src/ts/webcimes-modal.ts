@@ -106,6 +106,7 @@ export interface WebcimesModal {
 
 let nextTitleId = 0;
 const modalInstances = new WeakMap<HTMLElement, WebcimesModalImpl>();
+const handledBackdropClicks = new WeakSet<Event>();
 
 /**
  * WebcimesModal implementation class
@@ -158,12 +159,14 @@ class WebcimesModalImpl implements WebcimesModal {
 
     private focusableElements(backwards = false): HTMLElement[] {
         const candidates = this.modal.querySelectorAll<HTMLElement>(
-            'a[href], button, input, select, textarea, iframe, summary, [contenteditable="true"], [tabindex]',
+            'a[href], button, input, select, textarea, iframe, summary, [contenteditable], [tabindex]',
         );
         const focusable = Array.from(candidates).filter(
             (element) =>
                 (element.tabIndex >= 0 ||
-                    (element.isContentEditable && !element.hasAttribute('tabindex'))) &&
+                    (element.isContentEditable &&
+                        !element.parentElement?.isContentEditable &&
+                        !element.hasAttribute('tabindex'))) &&
                 !element.matches(':disabled, [type="hidden"]') &&
                 !element.closest('[inert]') &&
                 element.getClientRects().length > 0 &&
@@ -235,18 +238,20 @@ class WebcimesModalImpl implements WebcimesModal {
         } else if (event.key === 'Tab') {
             const elements = this.focusableElements(event.shiftKey);
             const active = document.activeElement;
-            const current = elements.find(
+            const current = elements.findIndex(
                 (element) => element === active || this.sameRadioGroup(active, element),
             );
-            const boundary = event.shiftKey ? elements[0] : elements[elements.length - 1];
+            const step = event.shiftKey ? -1 : 1;
+            const next = current + step;
+            const wraps = current < 0 || next < 0 || next >= elements.length;
+            // Positive tabindex values can interleave dialog and background controls.
+            if (!wraps && !elements.some((element) => element.tabIndex > 0)) return;
 
-            // Let the browser handle ordinary Tab moves and wrap only at the dialog boundary.
-            if (!current || current === boundary) {
-                event.preventDefault();
-                const target =
-                    (event.shiftKey ? elements[elements.length - 1] : elements[0]) ?? this.modal;
-                target.focus();
-            }
+            event.preventDefault();
+            const target = wraps
+                ? elements[event.shiftKey ? elements.length - 1 : 0]
+                : elements[next];
+            (target ?? this.modal).focus();
         }
     };
 
@@ -267,7 +272,13 @@ class WebcimesModalImpl implements WebcimesModal {
     };
 
     private eventClickOutside: (e: Event) => void = (e) => {
-        if (e.target == this.modals) {
+        if (
+            e.target === this.modals &&
+            this.topModal() === this.modal &&
+            !handledBackdropClicks.has(e)
+        ) {
+            // The topmost dialog can change while the shared backdrop dispatches the click.
+            handledBackdropClicks.add(e);
             if (this.options.allowCloseOutside) {
                 // Destroy modal
                 this.destroy();
@@ -862,7 +873,8 @@ class WebcimesModalImpl implements WebcimesModal {
                     const target = this.returnFocusTarget();
                     if (target && (!remainingModal || remainingModal.contains(target))) {
                         target.focus({ preventScroll: true });
-                    } else if (remainingModal && !remainingModal.contains(document.activeElement)) {
+                    }
+                    if (remainingModal && !remainingModal.contains(document.activeElement)) {
                         remainingModal.focus({ preventScroll: true });
                     }
                 }

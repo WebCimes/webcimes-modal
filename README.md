@@ -311,6 +311,8 @@ Use `titleHtml` or a heading inside `headerHtml` to give the dialog an accessibl
 
 On open, the library focuses a focusable element with `autofocus`, including a heading with `tabindex="-1"`. Otherwise, it focuses the first keyboard-focusable element or the dialog itself. Tab and Shift+Tab stay in the topmost Webcimes dialog. Escape dismisses that dialog when enabled. When the dialog closes, focus returns to its opener if it is still available.
 
+When several Webcimes dialogs are stacked, a backdrop click acts on the topmost dialog. Keyboard events inside an iframe stay in its document. For embedded content, include an explicit close control in the surrounding dialog.
+
 ### Add extra style to the modal:
 
 You can define the style of the modal with `css`, but you can also use the style property which allows to directly add an additional style to the modal.

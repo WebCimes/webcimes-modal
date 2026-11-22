@@ -28,8 +28,8 @@
                 <div>
                     <h1>Accessible dialogs for the web</h1>
                     <p class="intro">
-                        Create and animate modals with vanilla JavaScript and CSS. Try the dialog
-                        with your mouse or keyboard.
+                        Create and animate modals with vanilla JavaScript and CSS. Open a dialog,
+                        then try stacking a second one on top.
                     </p>
                     <button id="open-demo" class="primary-button" type="button">
                         Open modal <span aria-hidden="true">↗</span>
@@ -40,12 +40,15 @@
                     <figcaption>JavaScript</figcaption>
                     <pre><code><span class="keyword">import</span> { createWebcimesModal } <span class="keyword">from</span> <span class="string">'webcimes-modal'</span>;
 
-<span class="function">createWebcimesModal</span>({
+<span class="keyword">const</span> first = <span class="function">createWebcimesModal</span>({
     titleHtml: <span class="string">'Save changes?'</span>,
-    bodyHtml: <span class="string">'This is a demo dialog.'</span>,
-    buttonCancelHtml: <span class="string">'Cancel'</span>,
-    buttonConfirmHtml: <span class="string">'Save'</span>,
-});</code></pre>
+    bodyHtml: <span class="string">'&lt;button&gt;Open second modal&lt;/button&gt;'</span>,
+});
+
+first.modal.querySelector(<span class="string">'button'</span>)
+    .addEventListener(<span class="string">'click'</span>, () =&gt; {
+        <span class="function">createWebcimesModal</span>({ titleHtml: <span class="string">'Second modal'</span> });
+    });</code></pre>
                 </figure>
             </section>
             <section class="examples" aria-labelledby="examples-title">

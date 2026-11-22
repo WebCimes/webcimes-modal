@@ -172,13 +172,36 @@ button:focus-visible {
     font-size: 0.9rem;
 }
 
-.webcimes-modal.site-modal {
+.webcimes-modal:is(.site-modal, .site-modal--nested) {
     --modal-color: #14223b;
     --modal-button-confirm-background: #224ed0;
     --modal-button-confirm-background-hover: #173ba9;
     --modal-box-shadow: 0 1rem 3rem #0b17345e;
     max-width: min(90vw, 30rem);
     border-radius: 0.8rem;
+}
+
+.webcimes-modal.site-modal--nested {
+    max-width: 82vw;
+    translate: 0 2.25rem;
+}
+
+.site-modal-message {
+    margin: 0 0 0.75rem;
+}
+
+.site-modal-secondary {
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #afc1ed;
+    border-radius: 0.4rem;
+    color: var(--accent);
+    background: #f5f7fc;
+    font: inherit;
+    cursor: pointer;
+}
+
+.site-modal-secondary:hover {
+    background: #e7edfc;
 }
 
 @media (max-width: 720px) {

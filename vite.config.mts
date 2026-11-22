@@ -31,7 +31,7 @@ export default defineConfig(({ command }) => ({
                     // The UMD demo tests the built script and stylesheet from dist.
                     if (path === '/demo/demo_udm.html') return html;
                     return html.replace(
-                        '../dist/css/webcimes-modal.css',
+                        /\.\.?\/dist\/css\/webcimes-modal\.css/,
                         '/src/css/webcimes-modal.css',
                     );
                 },

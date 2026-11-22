@@ -1,5 +1,9 @@
 # webcimes-modal
 
+<img src="./demo/webcimes-modal-logo.png" width="96" height="96" alt="WebCimes Modal logo" />
+
+[Live demo](https://webcimes.github.io/webcimes-modal/)
+
 Create and animate modals simply, you can use multiple modals at the same time, create alert or confirm modal with buttons, move modals, set title, set body, etc.. It works with vanilla javascript + html + css, no dependencies are required and the module is built in a very lightweight size.
 
 Once the `webcimes-modal` javascript is defined, we can simply call the WebcimesModal class with the desired options.
@@ -463,7 +467,7 @@ You can style modal with the following field applying to the class of `.webcimes
 Use Node.js 20.19+ on the 20.x line, or Node.js 22.12 or later.
 
 - Run `npm install` and `npm run dev`.
-- Open `/demo/demo_esm.html` or `/test/keyboard.html` at the URL printed by Vite. Both pages load the TypeScript and CSS sources and update when you save.
+- Open the URL printed by Vite to find the test pages and demos. The keyboard and general tests and the ESM demo load the TypeScript and CSS sources and update when you save.
 - Run `npm run build` to generate the ESM and UMD bundles, CSS, declarations and source maps. Then open `/demo/demo_udm.html` to test the generated UMD bundle.
 - Run `npm run watch` to rebuild the distribution files when a source file changes.
 - Run `npm run build` before committing changes that affect the generated files or publishing the package. The development server serves source files and leaves `dist/` unchanged.

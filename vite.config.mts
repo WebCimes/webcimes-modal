@@ -8,7 +8,6 @@ import { defineConfig } from 'vite';
 // The .mts extension makes this config an ES module without changing the package's module type.
 const source = fileURLToPath(new URL('./src/ts/webcimes-modal.ts', import.meta.url));
 const stylesheet = new URL('./src/css/webcimes-modal.css', import.meta.url);
-const closeIcon = new URL('./src/images/times.svg', import.meta.url);
 const declaration = new URL('./src/ts/webcimes-modal.d.ts', import.meta.url);
 const declarationMap = new URL('./src/ts/webcimes-modal.d.ts.map', import.meta.url);
 const require = createRequire(import.meta.url);
@@ -54,7 +53,6 @@ export default defineConfig(({ command }) => ({
                 if (format !== 'es') return;
 
                 this.addWatchFile(fileURLToPath(stylesheet));
-                this.addWatchFile(fileURLToPath(closeIcon));
                 // The build script runs tsc once. Watch mode needs fresh declarations on rebuild.
                 if (this.meta.watchMode) {
                     execFileSync(
@@ -113,11 +111,6 @@ export default defineConfig(({ command }) => ({
                         }),
                     });
                 }
-                this.emitFile({
-                    type: 'asset',
-                    fileName: 'images/times.svg',
-                    source: await readFile(closeIcon),
-                });
             },
         },
     ],

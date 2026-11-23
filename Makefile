@@ -1,8 +1,10 @@
-.PHONY: help dev watch build pack push publish tag
+NPM_PUBLISH := npm publish --access public
+
+.PHONY: help dev watch build pack push publish tag release
 
 help:
 	@printf '%s\n' \
-		'Release: make pack → commit → make push → make publish → make tag' \
+		'Release: make pack → commit → make release' \
 		'' \
 		'  make dev      Start the Vite development server' \
 		'  make watch    Rebuild dist when sources change' \
@@ -10,7 +12,8 @@ help:
 		'  make pack     Build and preview the npm package' \
 		'  make push     Push main to GitHub' \
 		'  make publish  Build and publish the package to npm' \
-		'  make tag      Create and push the committed package version tag'
+		'  make tag      Create and push the committed package version tag' \
+		'  make release  Pack, check npm login, push, publish and tag'
 
 dev:
 	npm run dev
@@ -28,7 +31,7 @@ push:
 	git push origin main
 
 publish: build
-	npm publish --access public
+	$(NPM_PUBLISH)
 
 tag:
 	@set -e; \
@@ -36,3 +39,13 @@ tag:
 	test -n "$$version"; \
 	git tag -a "$$version" -m "Release $$version"; \
 	git push origin "refs/tags/$$version"
+
+release:
+	@test "$$(git branch --show-current)" = main || { echo "Release from main." >&2; exit 1; }
+	@test -z "$$(git status --porcelain)" || { echo "Commit the release changes first." >&2; exit 1; }
+	$(MAKE) pack
+	@test -z "$$(git status --porcelain)" || { echo "The build changed files. Commit them before releasing." >&2; exit 1; }
+	npm whoami || npm login
+	$(MAKE) push
+	$(NPM_PUBLISH)
+	$(MAKE) tag

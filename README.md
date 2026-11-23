@@ -482,6 +482,4 @@ Use Node.js 20.19+ on the 20.x line, or Node.js 22.12 or later.
 - Run `npm run watch` to rebuild the distribution files when a source file changes.
 - Run `npm run build` before committing changes that affect the generated files or publishing the package. The development server serves source files and leaves `dist/` unchanged.
 
-Run `make help` to list the available commands. After setting a new version, run `make pack` to build and preview the package, review and commit the changes, then run `make push` and `make publish`. Push sends `main` to GitHub. Publish rebuilds the package and publishes it to npm.
-
-After publishing to npm, run `make tag` to create and push the Git tag for the version in the committed `package.json`.
+Run `make release` from a clean `main` after committing the new version and generated files. It previews the package, checks the npm session with `npm whoami`, and runs `npm login` if needed. It then pushes `main`, publishes to npm, and pushes the version tag. When npm prompts for two-factor authentication, approve the publication in your browser.
